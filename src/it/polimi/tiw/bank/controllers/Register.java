@@ -22,8 +22,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/DoRegister")
 public class Register extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	Connection connection = null;
+    private static final long serialVersionUID = 1L;
+    Connection connection = null;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,7 +34,7 @@ public class Register extends HttpServlet {
     }
 
     public void init() throws ServletException {
-		try {
+        try {
             ServletContext context = getServletContext();
             String driver = context.getInitParameter("dbDriver");
             String url = context.getInitParameter("dbUrl");
@@ -44,15 +44,15 @@ public class Register extends HttpServlet {
             connection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
             throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
+        } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
-		}
+        }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -87,14 +87,14 @@ public class Register extends HttpServlet {
         }
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
         throws ServletException, IOException {
 
-		doPost(request, response);
-	}
+        doPost(request, response);
+    }
 
 }

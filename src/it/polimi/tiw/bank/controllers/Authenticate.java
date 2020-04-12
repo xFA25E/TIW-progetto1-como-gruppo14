@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/Authenticate")
 public class Authenticate extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private Connection connection = null;
 
     /**
@@ -35,7 +35,7 @@ public class Authenticate extends HttpServlet {
     }
 
     public void init() throws ServletException {
-		try {
+        try {
             ServletContext context = getServletContext();
             String driver = context.getInitParameter("dbDriver");
             String url = context.getInitParameter("dbUrl");
@@ -45,15 +45,15 @@ public class Authenticate extends HttpServlet {
             connection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
             throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
+        } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
-		}
+        }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -92,14 +92,14 @@ public class Authenticate extends HttpServlet {
         }
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
         throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doPost(request, response);
-	}
+        // TODO Auto-generated method stub
+        doPost(request, response);
+    }
 
 }

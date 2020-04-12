@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/DoLogout")
 public class Forget extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -23,10 +23,10 @@ public class Forget extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -37,14 +37,14 @@ public class Forget extends HttpServlet {
         response.sendRedirect("/Bank/home");
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
         throws ServletException, IOException {
 
         doPost(request, response);
-	}
+    }
 
 }

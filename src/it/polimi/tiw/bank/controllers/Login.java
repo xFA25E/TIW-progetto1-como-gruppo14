@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/Login")
 public class Login extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -25,16 +25,16 @@ public class Login extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
         throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.getWriter()
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.getWriter()
                 .append("<body>"
                         + "<form action=\"/Bank/authenticate\" method=\"POST\" >"
                         + "User <input name=\"user-name\" type=\"text\" value=\"\">"
@@ -51,19 +51,19 @@ public class Login extends HttpServlet {
                         + "<input type=\"submit\" value=\"register the sabbamit\">"
                         + "</form>"
                         + "</body>");
-		} else {
+        } else {
             response.sendRedirect("/Bank/home");
         }
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
         throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
 }

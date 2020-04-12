@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/Home")
 public class Home extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     Connection connection = null;
 
     /**
@@ -34,7 +34,7 @@ public class Home extends HttpServlet {
     }
 
     public void init() throws ServletException {
-		try {
+        try {
             ServletContext context = getServletContext();
             String driver = context.getInitParameter("dbDriver");
             String url = context.getInitParameter("dbUrl");
@@ -44,15 +44,15 @@ public class Home extends HttpServlet {
             connection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
             throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
+        } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
-		}
+        }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request,
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -86,14 +86,14 @@ public class Home extends HttpServlet {
         } else {
             response.sendRedirect("/Bank/login");
         }
-	}
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
 }
