@@ -1,6 +1,13 @@
 #+TITLE: Transazioni Bancarie
 
-| some  | things |
-|-------+--------|
-| test  | great  |
-| table | very   |
+| Heroku      | some.host/and-path |
+| db user     | user               |
+| db password | pass               |
+| db url      | url                |
+| db port     | port               |
+
+* Group members
+  - Valeriy Litkovskyy
+  - Alessio Spagnolo
+  - Gabriele Bianchi
+  - Christian Premoli
