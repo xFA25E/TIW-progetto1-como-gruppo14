@@ -20,7 +20,6 @@ CREATE TABLE account (
   account_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   customer_id INT UNSIGNED NOT NULL,
   deposited_amount BIGINT NOT NULL DEFAULT 0,
-  cause TEXT NOT NULL DEFAULT '',
   PRIMARY KEY (`account_id`),
   FOREIGN KEY (`customer_id`)
   REFERENCES customer(customer_id)
@@ -34,6 +33,7 @@ CREATE TABLE transfer (
   destination_account_id INT UNSIGNED NULL,
   creation_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   amount BIGINT UNSIGNED NOT NULL,
+  cause TINYTEXT NOT NULL DEFAULT '',
   PRIMARY KEY (`transfer_id`),
   FOREIGN KEY (`source_account_id`)
   REFERENCES account(account_id)
