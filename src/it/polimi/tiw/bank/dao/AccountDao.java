@@ -82,7 +82,7 @@ public class AccountDao {
         return account;
     }
     
-    public long createAccount(int customerId, int depositedMoney) 
+    public long createAccount(long customerId, long depositedMoney) 
     	throws SQLException {
 		String query = ("INSERT INTO account (customer_id, deposited_amount)"
 		     + "VALUES (?,?)");
