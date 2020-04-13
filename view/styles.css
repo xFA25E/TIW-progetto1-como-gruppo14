@@ -56,8 +56,12 @@ body {
     display: flex;
 }
 
-#content>div {
-    width: 50%;
+#content>div:first-child {
+    width: 55%;
+}
+
+#content>div:last-child {
+    width: 45%;
 }
 
 #transfers {
@@ -92,12 +96,16 @@ body {
 }
 
 #transfers-body table td {
-    width: 25%;
+    width: 20%;
     text-align: center;
 }
 
-#transfers-body table td:last-child {
+#transfers-body table td:nth-last-child(2) {
     font-size: 12px;
+}
+
+#transfers-body table td:last-child {
+    cursor: help;
 }
 
 #transfers-body table tr.export td:nth-child(3) {
