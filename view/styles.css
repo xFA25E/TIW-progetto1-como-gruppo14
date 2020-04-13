@@ -223,9 +223,19 @@ input[name=destination-account] {
     text-align: center;
 }
 
-#accounts table tr:first-child {
+#accounts table thead tr {
     background-color: #d9e0e2;
     color: #1f222b;
+}
+
+#accounts table tbody tr {
+    cursor: pointer;
+}
+
+#accounts table tbody tr:hover {
+    background-color: #e0ddd4;
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
 }
 
 #accounts table th,
@@ -233,4 +243,14 @@ input[name=destination-account] {
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 1.3em;
+}
+
+#accounts table th,
+#accounts table td {
+    width: 30%;
+}
+
+#accounts table th:first-child,
+#accounts table td:first-child {
+    width: 10%;
 }

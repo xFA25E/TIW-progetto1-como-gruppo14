@@ -15,8 +15,20 @@
         </div>
 
         <div id="status">
-            <div>Denaro incassato questo mese:<br><strong><span th:text="${spendedAmount}">500,00 </span>&euro;</strong></div>
-            <div>Denaro speso questo mese:<br><strong><span th:text="${earnedAmount}">500,00 </span>&euro;</strong></div>
+            <div>
+                Denaro incassato questo mese:<br>
+                <strong>
+                    &euro;
+                    <span th:text="${spendedAmount}">500,00</span>
+                </strong>
+            </div>
+            <div>
+                Denaro speso questo mese:<br>
+                <strong>
+                    &euro;
+                    <span th:text="${earnedAmount}">500,00</span>
+                </strong>
+            </div>
         </div>
 
         <div id="content">
@@ -29,9 +41,27 @@
                                 <img src="download.png" alt="download"
                                      width="32" height="32">
                             </td>
-                            <td><strong><span th:text="*{srcAccount == session.accountId}? *{dstAccountFullName} : *{srcAccountFullName}"> Giovanni </span> <span th:text="*{srcAccount == session.accountId}? *{dstAccount} : *{srcAccount}">(2020)</span></strong></td>
-                            <td><strong><span th:text="((*{type} == earned?) '+' : '-') + *{amount}"> + 300,00 </span></span>&euro;</strong></td>
-                            <td><em><span th:text="((*{date}">01/01/2020</span></em></td>
+                            <td>
+                                <strong>
+                                    <span th:text="*{srcAccount == session.accountId}? *{dstAccountFullName} : *{srcAccountFullName}">
+                                        Giovanni
+                                    </span>
+                                    <span th:text="*{srcAccount == session.accountId}? *{dstAccount} : *{srcAccount}">
+                                        (2020)
+                                    </span>
+                                </strong>
+                            </td>
+                            <td>
+                                <strong>
+                                    &euro;
+                                    <span th:text="((*{type} == earned?) '+' : '-') + *{amount}">
+                                        +300,00
+                                    </span>
+                                </strong>
+                            </td>
+                            <td>
+                                <em><span th:text="((*{date}">01/01/2020</span></em>
+                            </td>
                             <td th:title="*{cause}" title="la mia bella causa">
                                 <img src="icons8-help-64.png"
                                      height="32" width="32">
@@ -43,7 +73,7 @@
                                      height="32">
                             </td>
                             <td><strong>Giovanni (2020)</strong></td>
-                            <td><strong>- 300,00&euro;</strong></td>
+                            <td><strong>&euro; -300,00</strong></td>
                             <td><em>01/01/2020</em></td>
                             <td title="la mia bella causa">
                                 <img src="icons8-help-64.png"
