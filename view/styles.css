@@ -54,63 +54,51 @@ body {
     padding: 5px;
 }
 
-#transfers table {
+#transfers-header {
+    background-color: #1f222b;
+    color: #f4f3f3;
+    text-align: center;
+}
+
+#transfers-header h2 {
+    font-size: 32px;
+    padding: 17px;
+    margin: 0px;
+}
+
+#transfers-body {
+    width: 100%;
+    overflow: auto;
+    height: 600px;
+}
+
+#transfers-body table {
     border-collapse: collapse;
     width: 100%;
 }
 
-#transfers table thead {
-    display: block;
-}
-
-#transfers table thead tr {
-    display: table;
-    width: 100%;
-}
-
-#transfers table thead tr td {
-    background-color: #1f222b;
-    color: #f4f3f3;
-    padding: 15px;
-    margin: 0;
-    font-size: 32px;
-    text-align: center;
-}
-
-#transfers table tbody {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 600px;
-
-}
-
-#transfers table tbody tr:nth-child(2n) {
+#transfers-body table tr:nth-child(2n) {
     background-color: #d9e0e2;
 }
 
-#transfers table tbody td {
+#transfers-body table td {
     width: 25%;
     text-align: center;
 }
 
-#transfers table tbody td:last-child {
+#transfers-body table td:last-child {
     font-size: 12px;
 }
 
-#transfers table tbody tr.export td:nth-child(3) {
+#transfers-body table tr.export td:nth-child(3) {
     color: #f04b4b;
 }
 
-#transfers table tbody tr.import td:nth-child(3) {
+#transfers-body table tr.import td:nth-child(3) {
     color: #73d57b;
 }
 
-#transfers table tbody th,
-#transfers table tbody td {
+#transfers-body table td {
     padding: 15px;
 }
 
