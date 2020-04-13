@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class AccountDao {
 	
@@ -16,20 +19,79 @@ public class AccountDao {
         this.connection = connection;
     }
 	
-    public Account findAllByCustomer(long customerId) throws SQLException {
-    	Account account = null;
-    	String query = "SELECT * FROM account WHERE customer_id = ?";
+    public List<Account> findAllByCustomerId(long customerId) throws SQLException {
+    	List<Account> accountList = new ArrayList<Account>();
+    	
+    	String query =
+    			"SELECT a.account_id," + 
+    			"       a.customer_id, " + 
+    			"       t.total_amount AS amount, " + 
+    			"       (SELECT MAX(creation_time) " + 
+    			"          FROM transfer " + 
+    			"         WHERE source_account_id = a.account_id " + 
+    			"            OR destination_account_id = a.account_id) AS last_edit " + 
+    			"  FROM account AS a " + 
+    			"         JOIN account_total_amount AS t USING (account_id) " + 
+    			" WHERE a.customer_id = ?";
     	ResultSet result = null;
     	PreparedStatement pstatement = null;
     	try {
     		pstatement = connection.prepareStatement(query);
-    		pstatement.setLong(2, customerId);
+    		pstatement.setLong(1, customerId);
+    		result = pstatement.executeQuery();
+    		while(result.next()) {
+    			Account account = new Account();
+    			account.setAccountId(result.getLong("account_id"));
+    			account.setCustomerId(result.getLong("customer_id"));
+    			account.setAmount(result.getLong("amount"));
+    			account.setLastEdit(result.getDate("last_edit"));
+                accountList.add(account);
+    		}
+    	}catch (SQLException e) {
+            throw new SQLException(e);
+
+        } finally {
+            try {
+                result.close();
+            } catch (Exception e1) {
+                throw new SQLException("Cannot close result");
+            }
+            try {
+                pstatement.close();
+            } catch (Exception e1) {
+                throw new SQLException("Cannot close statement");
+            }
+        }
+        return accountList;
+    }
+    
+    
+    public Account findAccountByAccountId(long accountId) throws SQLException {
+    	Account account = null;
+    	
+    	String query =
+    			"SELECT a.account_id," + 
+    			"       a.customer_id, " + 
+    			"       t.total_amount AS amount, " + 
+    			"       (SELECT MAX(creation_time) " + 
+    			"          FROM transfer " + 
+    			"         WHERE source_account_id = a.account_id " + 
+    			"            OR destination_account_id = a.account_id) AS last_edit " + 
+    			"  FROM account AS a " + 
+    			"         JOIN account_total_amount AS t USING (account_id) " + 
+    			" WHERE a.customer_id = ?";
+    	ResultSet result = null;
+    	PreparedStatement pstatement = null;
+    	try {
+    		pstatement = connection.prepareStatement(query);
+    		pstatement.setLong(1, accountId);
     		result = pstatement.executeQuery();
     		while(result.next()) {
     			account = new Account();
     			account.setAccountId(result.getLong("account_id"));
     			account.setCustomerId(result.getLong("customer_id"));
-                account.setDepositedMoney(result.getLong("deposited_amount"));
+    			account.setAmount(result.getLong("amount"));
+    			account.setLastEdit(result.getDate("last_edit"));
     		}
     	}catch (SQLException e) {
             throw new SQLException(e);
@@ -49,73 +111,7 @@ public class AccountDao {
         return account;
     }
     
-    public Account findAccountById(long accountId) throws SQLException {
-        Account account = null;
-        String query = "SELECT * FROM account WHERE account_id = ?";
-        ResultSet result = null;
-        PreparedStatement pstatement = null;
-        try {
-            pstatement = connection.prepareStatement(query);
-            pstatement.setLong(1, accountId);
-            result = pstatement.executeQuery();
-            while (result.next()) {
-                account = new Account();
-                account.setAccountId(result.getLong("account_id"));
-                account.setCustomerId(result.getLong("customer_id"));
-                account.setDepositedMoney(result.getLong("deposited_amount"));
-            }
-        } catch (SQLException e) {
-            throw new SQLException(e);
-
-        } finally {
-            try {
-                result.close();
-            } catch (Exception e1) {
-                throw new SQLException("Cannot close result");
-            }
-            try {
-                pstatement.close();
-            } catch (Exception e1) {
-                throw new SQLException("Cannot close statement");
-            }
-        }
-        return account;
-    }
     
-    public long createAccount(long customerId, long depositedMoney) 
-    	throws SQLException {
-		String query = ("INSERT INTO account (customer_id, deposited_amount)"
-		     + "VALUES (?,?)");
-		
-		PreparedStatement pstatement = null;
-		try {
-			pstatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			pstatement.setLong(2, customerId);
-			pstatement.setLong(3, depositedMoney);
-			int affectedRows = pstatement.executeUpdate();
-			
-			if (affectedRows == 0) {
-				throw new SQLException("Creating account failed, no rows affected.");
-			}
-			
-			try (ResultSet generatedKeys = pstatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					return generatedKeys.getLong(1);
-				} else {
-					throw new SQLException("Creating account failed, no ID obtained.");
-				}
-			}
-		} catch (SQLException e) {
-		throw new SQLException(e);
-		} finally {
-			try {
-			pstatement.close();
-			} catch (Exception e1) {
-			
-			}
-		}
-	}
-	
 	public void deleteAccountById(long accountId) throws SQLException {
 		String query = "DELETE FROM account WHERE account_id = ?";
 		

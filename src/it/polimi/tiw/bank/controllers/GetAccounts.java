@@ -1,5 +1,13 @@
 package it.polimi.tiw.bank.controllers;
 
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.context.WebContext;
+
+
+import it.polimi.tiw.bank.beans.Account;
+import it.polimi.tiw.bank.dao.AccountDao;
 import it.polimi.tiw.bank.beans.Customer;
 import it.polimi.tiw.bank.dao.CustomerDao;
 
@@ -7,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,15 +29,16 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class Home
  */
-@WebServlet("/Home")
-public class Home extends HttpServlet {
+@WebServlet("/GetAccounts")
+public class GetAccounts extends HttpServlet {
     private static final long serialVersionUID = 1L;
     Connection connection = null;
-
+    private TemplateEngine templateEngine;
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Home() {
+    public GetAccounts() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,6 +57,13 @@ public class Home extends HttpServlet {
         } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
         }
+        
+        ServletContext servletContext = getServletContext();
+		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
     }
 
     /**
@@ -60,24 +77,33 @@ public class Home extends HttpServlet {
 
         if (session != null) {
             CustomerDao customerDao = new CustomerDao(connection);
+            AccountDao accountDao = new AccountDao(connection);
             long customerId = (Long) session.getAttribute("CUSTOMERID");
 
             try {
                 Customer customer = customerDao.findCustomerById(customerId);
-
+                List<Account> accountList = accountDao.findAllByCustomerId(customerId);
+                
                 if (customer == null) {
                     session.invalidate();
                     response.sendRedirect("/Bank/login");
                 } else {
-                    response.getWriter()
-                        .append("<body>Hello "
-                                + customer.getFullName()
-                                + "<br>you can <form method=\"POST\" action=\"/Bank/forget\">"
-                                + "<input type=\"submit\" value=\"Log Out\">"
-                                + "</form>"
-                                + "<br>or you can <form method=\"POST\" action=\"/Bank/delete\">"
-                                + "<input type=\"submit\" value=\"Delete Customer\">"
-                                + "</form>");
+//                    response.getWriter()
+//                        .append("<body>Hello "
+//                                + customer.getFullName()
+//                                + "<br>you can <form method=\"POST\" action=\"/Bank/forget\">"
+//                                + "<input type=\"submit\" value=\"Log Out\">"
+//                                + "</form>"
+//                                + "<br>or you can <form method=\"POST\" action=\"/Bank/delete\">"
+//                                + "<input type=\"submit\" value=\"Delete Customer\">"
+//                                + "</form>");
+                	String path = "/Templates/Home/Home.html";
+            		ServletContext servletContext = getServletContext();
+            		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+                    ctx.setVariable("fullName", customer.getFullName());
+                    ctx.setVariable("accounts", accountList);
+                    
+                    templateEngine.process(path, ctx, response.getWriter());
                 }
             } catch (SQLException e) {
                 session.invalidate();
