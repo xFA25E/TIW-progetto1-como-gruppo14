@@ -34,6 +34,7 @@ CREATE TABLE transfer (
   creation_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   amount BIGINT UNSIGNED NOT NULL,
   cause TINYTEXT NOT NULL DEFAULT '',
+  CHECK (`source_account_id` <> `destination_account_id`),
   PRIMARY KEY (`transfer_id`),
   FOREIGN KEY (`source_account_id`)
   REFERENCES account(account_id)
