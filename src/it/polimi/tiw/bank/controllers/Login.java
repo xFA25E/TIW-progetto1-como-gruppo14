@@ -35,7 +35,7 @@ public class Login extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.getWriter()
-                .append("<body>"
+                .append("<body> andiamo da dio"
                         + "<form action=\"/Bank/authenticate\" method=\"POST\" >"
                         + "User <input name=\"user-name\" type=\"text\" value=\"\">"
                         + "<br>"
