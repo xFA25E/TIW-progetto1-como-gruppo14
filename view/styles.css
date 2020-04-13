@@ -29,6 +29,16 @@ body {
     height: 100%;
 }
 
+#header input[type=submit] {
+    background-color: #1f222b;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    color: #f4f3f3;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 #status {
     background-color: #d9e0e2;
     color: #1f222b;
@@ -194,4 +204,25 @@ input[name=destination-account]::-webkit-inner-spin-button {
 /* Firefox */
 input[name=destination-account] {
     -moz-appearance: textfield;
+}
+
+#accounts table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#accounts table td {
+    text-align: center;
+}
+
+#accounts table tr:first-child {
+    background-color: #d9e0e2;
+    color: #1f222b;
+}
+
+#accounts table th,
+#accounts table td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 1.3em;
 }
