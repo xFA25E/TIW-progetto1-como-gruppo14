@@ -29,6 +29,16 @@ body {
     height: 100%;
 }
 
+#header input[type=submit] {
+    background-color: #1f222b;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    color: #f4f3f3;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 #status {
     background-color: #d9e0e2;
     color: #1f222b;
@@ -46,71 +56,67 @@ body {
     display: flex;
 }
 
-#content>div {
-    width: 50%;
+#content>div:first-child {
+    width: 55%;
+}
+
+#content>div:last-child {
+    width: 45%;
 }
 
 #transfers {
     padding: 5px;
 }
 
-#transfers table {
+#transfers-header {
+    background-color: #1f222b;
+    color: #f4f3f3;
+    text-align: center;
+}
+
+#transfers-header h2 {
+    font-size: 32px;
+    padding: 17px;
+    margin: 0px;
+}
+
+#transfers-body {
+    width: 100%;
+    overflow: auto;
+    height: 600px;
+}
+
+#transfers-body table {
     border-collapse: collapse;
     width: 100%;
 }
 
-#transfers table thead {
-    display: block;
-}
-
-#transfers table thead tr {
-    display: table;
-    width: 100%;
-}
-
-#transfers table thead tr td {
-    background-color: #1f222b;
-    color: #f4f3f3;
-    padding: 15px;
-    margin: 0;
-    font-size: 32px;
-    text-align: center;
-}
-
-#transfers table tbody {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 600px;
-
-}
-
-#transfers table tbody tr:nth-child(2n) {
+#transfers-body table tr:nth-child(2n) {
     background-color: #d9e0e2;
 }
 
-#transfers table tbody td {
-    width: 25%;
+#transfers-body table td {
+    width: 20%;
     text-align: center;
 }
 
-#transfers table tbody td:last-child {
+#transfers-body table td:nth-last-child(2) {
     font-size: 12px;
 }
 
-#transfers table tbody tr.export td:nth-child(3) {
+#transfers-body table td:last-child {
+    cursor: help;
+}
+
+#transfers-body table tr.export td:nth-child(3) {
     color: #f04b4b;
 }
 
-#transfers table tbody tr.import td:nth-child(3) {
+#transfers-body table tr.import td:nth-child(3) {
     color: #73d57b;
 }
 
-#transfers table tbody th,
-#transfers table tbody td {
+#transfers-body table td {
     padding: 15px;
 }
 
@@ -206,4 +212,25 @@ input[name=destination-account]::-webkit-inner-spin-button {
 /* Firefox */
 input[name=destination-account] {
     -moz-appearance: textfield;
+}
+
+#accounts table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#accounts table td {
+    text-align: center;
+}
+
+#accounts table tr:first-child {
+    background-color: #d9e0e2;
+    color: #1f222b;
+}
+
+#accounts table th,
+#accounts table td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 1.3em;
 }
