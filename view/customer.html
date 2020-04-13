@@ -10,7 +10,7 @@
             <div id="menu">
                 <a href="#"><img alt="Home" src="home-solid.svg"></a>
             </div>
-            <div><h2>Alessio Spagnolo</h2></div>
+            <div><h2><span th:text="$(fullName)"></span>Alessio Spagnolo</h2></div>
             <div>
                 <form action="/Bank/forget" method="post">
                     <input type="submit" value="Log Out">
@@ -30,12 +30,12 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody th:remove="all-but-first" th:each="account : ${accounts}" th:object="account">
                     <tr onclick="window.location='account.html';">
                         <td><img src="bank-card-back-side.png"></td>
-                        <td>2020</td>
-                        <td>&euro;23423,00</td>
-                        <td>20/20/20</td>
+                        <td><span th:text="*(accountId)">2020</span></td>
+                        <td>&euro;<span th:text="*(amount)">23423,00</span></td>
+                        <td><span th:text="*(lastEdit)">20/20/20</span></td>
                     </tr>
                     <tr onclick="window.location='account.html';">
                         <td><img src="bank-card-back-side.png"></td>
