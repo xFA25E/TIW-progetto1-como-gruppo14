@@ -10,28 +10,28 @@
             <div id="menu">
                 <a href="#"><img alt="Home" src="home-solid.svg"></a>
             </div>
-            <div><h2>Conto 2020</h2></div>
-            <div><h2>Saldo: 300,00&euro;</h2></div>
+            <div><h2>Conto <span th:text="${accountId}">2020</span></h2></div>
+            <div><h2>Saldo: <span th:text="${amount}">300,00 </span> &euro;</h2></div>
         </div>
 
         <div id="status">
-            <div>Denaro incassato questo mese:<br><strong>500,00&euro;</strong></div>
-            <div>Denaro speso questo mese:<br><strong>200,00&euro;</strong></div>
+            <div>Denaro incassato questo mese:<br><strong><span th:text="${spendedAmount}">500,00 </span>&euro;</strong></div>
+            <div>Denaro speso questo mese:<br><strong><span th:text="${earnedAmount}">500,00 </span>&euro;</strong></div>
         </div>
 
         <div id="content">
             <div id="transfers">
                 <div id="transfers-header"><h2>Trasferimenti</h2></div>
                 <div id="transfers-body">
-                    <table>
-                        <tr class="import">
+                    <table th:remove="all-but-first" th:each="transfer : ${transfers}" th:object="transfer">
+                        <tr th:class="*{srcAccount == session.accountId}? 'export' : 'import '" class="import">
                             <td>
                                 <img src="download.png" alt="download"
                                      width="32" height="32">
                             </td>
-                            <td><strong>Giovanni (2020)</strong></td>
-                            <td><strong>+ 300,00&euro;</strong></td>
-                            <td><em>01/01/2020</em></td>
+                            <td><strong><span th:text="*{srcAccount == session.accountId}? *{dstAccountFullName} : *{srcAccountFullName}"> Giovanni </span> <span th:text="*{srcAccount == session.accountId}? *{dstAccount} : *{srcAccount}">(2020)</span></strong></td>
+                            <td><strong><span th:text="((*{type} == earned?) '+' : '-') + *{amount}"> + 300,00 </span></span>&euro;</strong></td>
+                            <td><em><span th:text="((*{date}">01/01/2020</span></em></td>
                         </tr>
                         <tr class="export">
                             <td>
