@@ -2,7 +2,7 @@
 
 | Heroku  | [[https://tiw-progetto4-group14.herokuapp.com]]                       |
 | db user | b702d301000bee                                                    |
-| db pas  | 8475d141                                                          |
+| db pass | 8475d141                                                          |
 | db url  | eu-cdbr-west-02.cleardb.net/heroku_fbd6ce354f06502?reconnect=true |
 | db port | 3306                                                              |
 
