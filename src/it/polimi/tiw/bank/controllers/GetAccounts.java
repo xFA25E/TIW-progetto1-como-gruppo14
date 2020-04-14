@@ -113,4 +113,12 @@ public class GetAccounts extends HttpServlet {
         doGet(request, response);
     }
 
+    public void destroy() {
+	    // Close the connection
+	    if (connection != null)
+	    	try { 
+	    		connection.close(); 
+	    	} catch (SQLException ignore) { 	  
+	    	}
+	  }
 }

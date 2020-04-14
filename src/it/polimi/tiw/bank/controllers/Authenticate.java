@@ -102,4 +102,12 @@ public class Authenticate extends HttpServlet {
         doPost(request, response);
     }
 
+    public void destroy() {
+	    // Close the connection
+	    if (connection != null)
+	    	try { 
+	    		connection.close(); 
+	    	} catch (SQLException ignore) { 	  
+	    	}
+	  }
 }
