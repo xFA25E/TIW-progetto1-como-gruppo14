@@ -1,6 +1,6 @@
 #+TITLE: Transazioni Bancarie
 
-| Heroku  | some.host/and-path                                                |
+| Heroku  | https://tiw-progetto4-group14.herokuapp.com                                              |
 | db user | b702d301000bee                                                    |
 | db pas  | 8475d141                                                          |
 | db url  | eu-cdbr-west-02.cleardb.net/heroku_fbd6ce354f06502?reconnect=true |
@@ -11,3 +11,8 @@
   - Alessio Spagnolo
   - Gabriele Bianchi
   - Christian Premoli
+  
+At https://tiw-progetto4-group14.herokuapp.com/admin is possible to: create and delete users, create and delete bank accounts and select the "deposited amount".
+Is also possbile to test app using this access credentials:
+user: progetto
+pass: progetto
