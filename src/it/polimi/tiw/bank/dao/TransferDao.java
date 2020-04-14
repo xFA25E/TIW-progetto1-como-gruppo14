@@ -61,11 +61,11 @@ public class TransferDao {
 			long amount,
 			String cause )
 		throws SQLException {
-		String query = ("INSERT INTO transfer (source_account_id,"
-				+ "                			   destination_account_id,"
-				+ "                   		   amount,"
-				+ "                 	       cause)"
-				+ "VALUES (?, ?, ?, ?)");
+		String query =
+            "INSERT INTO transfer (source_account_id, destination_account_id, amount, cause)\n" +
+            "SELECT ?, ?, ?, ?\n" +
+            "  FROM account_total_amount\n" +
+            " WHERE account_id = ? AND total_amount >= ?\n";
 
 		PreparedStatement pstatement = null;
 		try {
@@ -74,6 +74,8 @@ public class TransferDao {
 			pstatement.setLong(2, destinationAccountId);
 			pstatement.setLong(3, amount);
 			pstatement.setString(4, cause);
+            pstatement.setLong(5, sourceAccountId);
+            pstatement.setLong(6, amount);
 			int affectedRows = pstatement.executeUpdate();
 
 			if (affectedRows == 0) {
