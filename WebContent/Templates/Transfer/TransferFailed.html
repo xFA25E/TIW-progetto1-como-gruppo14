@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<link rel="stylesheet" href="/Bank/assets/css/styles_transfer_failed.css">
+	<title>Bonifico Fallito</title>
+	</head>
+	<body>
+		<div id="header">
+            <div id="menu">
+				<a href="#"> <img src="/Bank/assets/css/home-solid.svg">     </a>
+            </div>
+            <div>
+				<h2> Conto <span th:text="$(sourceAccountId)">2020</span></h2>
+            </div>
+        </div>
+		<div id="message">
+			Bonifico Fallito
+		</div>
+		<div id="div-table">
+			<table>
+				<tr>
+					<td id="table-title">Riepilogo</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="table-data">A</td>
+					<td><span th:text="$(destinationAccountId)">Ale Spanish</span></td>
+				</tr>
+				<tr>
+					<td class="table-data">Importo</td>
+					<td><span th:text="${transferAmountEuros} + |,| + ${transferAmountCents}">200,00</span>&euro;</td>
+				</tr>
+				<tr>
+					<td class="table-data">Motivo</td>
+					<td><span th:text="$(errorMessage)">Non si possiede abbastanza denaro</span></td>
+				</tr>
+			</table>
+		</div>
+		<a id="return" href="#"><h2>Ritorna alla pagina</h2></a>
+	</body>
+</html>

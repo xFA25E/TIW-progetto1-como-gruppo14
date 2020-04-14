@@ -88,15 +88,6 @@ public class GetAccounts extends HttpServlet {
                     session.invalidate();
                     response.sendRedirect("/Bank/login");
                 } else {
-//                    response.getWriter()
-//                        .append("<body>Hello "
-//                                + customer.getFullName()
-//                                + "<br>you can <form method=\"POST\" action=\"/Bank/forget\">"
-//                                + "<input type=\"submit\" value=\"Log Out\">"
-//                                + "</form>"
-//                                + "<br>or you can <form method=\"POST\" action=\"/Bank/delete\">"
-//                                + "<input type=\"submit\" value=\"Delete Customer\">"
-//                                + "</form>");
                 	String path = "/Templates/Home/Home.html";
             		ServletContext servletContext = getServletContext();
             		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -122,4 +113,12 @@ public class GetAccounts extends HttpServlet {
         doGet(request, response);
     }
 
+    public void destroy() {
+	    // Close the connection
+	    if (connection != null)
+	    	try { 
+	    		connection.close(); 
+	    	} catch (SQLException ignore) { 	  
+	    	}
+	  }
 }

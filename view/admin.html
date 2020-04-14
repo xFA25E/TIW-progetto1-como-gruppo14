@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Admin Page</title>
+        <style>
+            form {
+                width: 15%;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+
+        <form method='POST'>
+            <fieldset>
+                <legend>Create Customer</legend>
+                <input type='hidden' name='action' value='create'>
+                Full Name<br>
+                <input name='full-name' type='text' value=''><br>
+                User<br>
+                <input name='user-name' type='text' value=''><br>
+                Pass<br>
+                <input name='password' type='text' value=''><br>
+                <input type='submit' value='Create'>
+            </fieldset>
+        </form>
+
+        <form method='POST'>
+            <fieldset>
+                <legend>Delete Customer</legend>
+                <input type='hidden' name='action' value='delete'>
+                User<br>
+                <input name='user-name' type='text' value=''><br>
+                <input type='submit' value='Delete'>
+            </fieldset>
+        </form>
+
+        <br><br>
+
+        <form method='POST'>
+            <fieldset>
+                <legend>Create Account</legend>
+                <input type='hidden' name='action' value='create-account'>
+                User<br>
+                <input name='user-name' type='text' value=''><br>
+                Amount<br>
+                <input name='amount' type='text' value=''><br>
+                <input type='submit' value='Create'>
+            </fieldset>
+        </form>
+
+        <form method='POST'>
+            <fieldset>
+                <legend>Delete Account</legend>
+                <input type='hidden' name='action' value='delete-account'>
+                Account<br>
+                <input name='account' type='text' value=''><br>
+                <input type='submit' value='Delete'>
+            </fieldset>
+        </form>
+
+        <br><br>
+
+        <form method='POST'>
+            <fieldset>
+                <legend>Change Deposited Amount</legend>
+                <input type='hidden' name='action' value='change-amount'>
+                Account<br>
+                <input name='account' type='text' value=''><br>
+                Amount<br>
+                <input name='amount' type='text' value=''><br>
+                <input type='submit' value='Change'>
+            </fieldset>
+        </form>
+
+    </body>
+</html>

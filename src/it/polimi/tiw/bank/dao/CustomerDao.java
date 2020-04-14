@@ -127,13 +127,13 @@ public class CustomerDao {
         }
     }
 
-    public void deleteCustomerById(long customerId) throws SQLException {
-        String query = "DELETE FROM customer WHERE customer_id = ?";
+    public void deleteCustomerByUserName(String userName) throws SQLException {
+        String query = "DELETE FROM customer WHERE user_name = ?";
 
         PreparedStatement pstatement = null;
         try {
             pstatement = connection.prepareStatement(query);
-            pstatement.setLong(1, customerId);
+            pstatement.setString(1, userName);
             pstatement.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e);
