@@ -57,6 +57,8 @@ public class Authenticate extends HttpServlet {
                           HttpServletResponse response)
         throws ServletException, IOException {
 
+    	try {
+    		init();
         if (request.getSession(false) != null) {
             response.sendRedirect("/Bank/home");
         } else {
@@ -86,10 +88,14 @@ public class Authenticate extends HttpServlet {
                         }
                     }
                 } catch (SQLException e) {
-                    response.sendRedirect("/Bank/login");
+                	throw new ServletException(e.getMessage());
+                    // response.sendRedirect("/Bank/login");
                 }
             }
         }
+    	} finally {
+    		destroy();
+    	}
     }
 
     /**

@@ -72,6 +72,8 @@ public class GetAccountPage extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			init();
 		 HttpSession session = request.getSession(false);
 
 	        if (session != null) {
@@ -138,6 +140,9 @@ public class GetAccountPage extends HttpServlet {
 	        } else {
 	            response.sendRedirect("/Bank/login");
 	        }
+		} finally {
+			destroy();
+		}
 	}
 
 	/**

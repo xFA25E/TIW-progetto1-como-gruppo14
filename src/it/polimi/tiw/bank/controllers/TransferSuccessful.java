@@ -67,6 +67,8 @@ public class TransferSuccessful extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		try {
+			init();
 		HttpSession session = request.getSession();
 
         if (session != null) {
@@ -106,6 +108,9 @@ public class TransferSuccessful extends HttpServlet {
         } else {
             response.sendRedirect("/Bank/login");
         }
+		} finally {
+			destroy();
+		}
     }
 
 	/**

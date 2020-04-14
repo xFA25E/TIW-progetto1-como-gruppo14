@@ -140,6 +140,8 @@ public class Admin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
+		try {
+			init();
         String action = request.getParameter("action");
 
         switch (action) {
@@ -222,7 +224,9 @@ public class Admin extends HttpServlet {
         }
 
         doGet(request, response);
-
+		} finally {
+			destroy();
+		}
     }
 	
 	public void destroy() {

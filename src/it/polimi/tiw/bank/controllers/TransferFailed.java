@@ -66,7 +66,9 @@ public class TransferFailed extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub\
+		try {
+			init();
 		HttpSession session = request.getSession();
 
         if (session != null) {
@@ -108,6 +110,9 @@ public class TransferFailed extends HttpServlet {
         } else {
             response.sendRedirect("/Bank/login");
         }
+		} finally {
+			destroy();
+		}
     }
 
 	/**

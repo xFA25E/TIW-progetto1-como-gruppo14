@@ -73,6 +73,8 @@ public class GetAccounts extends HttpServlet {
                          HttpServletResponse response)
         throws ServletException, IOException {
 
+    	try {
+    		init();
         HttpSession session = request.getSession(false);
 
         if (session != null) {
@@ -103,6 +105,9 @@ public class GetAccounts extends HttpServlet {
         } else {
             response.sendRedirect("/Bank/login");
         }
+    	} finally {
+    		destroy();
+    	}
     }
 
     /**

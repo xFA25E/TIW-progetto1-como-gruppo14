@@ -84,6 +84,9 @@ public class CreateTransfer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+		
+		try {
+			init();
 		HttpSession session = request.getSession(false);
 
 		if (session != null) {
@@ -129,6 +132,9 @@ public class CreateTransfer extends HttpServlet {
 
 		} else {
 			response.sendRedirect("/Bank/login");
+		}
+		} finally {
+			destroy();
 		}
 	}
 	
