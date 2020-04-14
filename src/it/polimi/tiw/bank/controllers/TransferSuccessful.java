@@ -115,5 +115,14 @@ public class TransferSuccessful extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	public void destroy() {
+	    // Close the connection
+	    if (connection != null)
+	      try { 
+	    	  connection.close(); 
+	      } catch (SQLException ignore) { 	  
+	      }
+	  }
 
 }

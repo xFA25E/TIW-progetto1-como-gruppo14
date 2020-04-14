@@ -131,4 +131,13 @@ public class CreateTransfer extends HttpServlet {
 			response.sendRedirect("/Bank/login");
 		}
 	}
+	
+	public void destroy() {
+	    // Close the connection
+	    if (connection != null)
+	      try { 
+	    	  connection.close(); 
+	      } catch (SQLException ignore) { 	  
+	      }
+	  }
 }
