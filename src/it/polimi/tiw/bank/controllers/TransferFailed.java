@@ -31,29 +31,15 @@ public class TransferFailed extends HttpServlet {
 	Connection connection = null;
 	private TemplateEngine templateEngine;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TransferFailed() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public TransferFailed() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public void init() throws ServletException {
-		try {
-			ServletContext context = getServletContext();
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
-			throw new UnavailableException("Couldn't get db connection");
-		}
-
+	public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -63,72 +49,88 @@ public class TransferFailed extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub\
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
-			init();
-		HttpSession session = request.getSession();
 
-        if (session != null) {
-        	AccountDao accountDao = new AccountDao(connection);
+			try {
+				ServletContext context = getServletContext();
+				String driver = context.getInitParameter("dbDriver");
+				String url = context.getInitParameter("dbUrl");
+				String user = context.getInitParameter("dbUser");
+				String password = context.getInitParameter("dbPassword");
+				Class.forName(driver);
+				connection = DriverManager.getConnection(url, user, password);
+			} catch (ClassNotFoundException e) {
+				throw new UnavailableException("Can't load database driver");
+			} catch (SQLException e) {
+				throw new UnavailableException("Couldn't get db connection");
+			}
 
-            Long sourceAccountId = (Long) session.getAttribute("sourceAccountId");
-            Long destinationAccountId = (Long) session.getAttribute("destinationAccountId");
-            Long destinationCustomerId = (Long) session.getAttribute("destinationCustomerId");
-            Long amount = (Long) session.getAttribute("amount");
-            Exception error = (Exception) session.getAttribute("error");
+			HttpSession session = request.getSession();
 
-            try {
-                Account account = accountDao.findAccountByAccountId(sourceAccountId);
+			if (session != null) {
+				AccountDao accountDao = new AccountDao(connection);
 
-                long updatedAccountAmountEuro = account.getEuros();
-                String updatedAccountAmountCents = account.getCents();
+				Long sourceAccountId = (Long) session.getAttribute("sourceAccountId");
+				Long destinationAccountId = (Long) session.getAttribute("destinationAccountId");
+				Long destinationCustomerId = (Long) session.getAttribute("destinationCustomerId");
+				Long amount = (Long) session.getAttribute("amount");
+				Exception error = (Exception) session.getAttribute("error");
 
-                String path = "/Templates/Transfer/TransferFailed.html";
-                ServletContext servletContext = getServletContext();
-                final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-                ctx.setVariable("sourceAccountId", sourceAccountId);
+				try {
+					Account account = accountDao.findAccountByAccountId(sourceAccountId);
 
-                ctx.setVariable("destinationAccountId", destinationAccountId);
-                ctx.setVariable("destinationCustomerId", destinationCustomerId);
+					long updatedAccountAmountEuro = account.getEuros();
+					String updatedAccountAmountCents = account.getCents();
 
-                ctx.setVariable("transferAmountEuros", amount / 100);
-                ctx.setVariable("transferAmountCents", String.format("%02d", amount % 100));
+					String path = "/Templates/Transfer/TransferFailed.html";
+					ServletContext servletContext = getServletContext();
+					final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+					ctx.setVariable("sourceAccountId", sourceAccountId);
 
-                //		ctx.setVariable("cause", cause);
+					ctx.setVariable("destinationAccountId", destinationAccountId);
+					ctx.setVariable("destinationCustomerId", destinationCustomerId);
 
-                ctx.setVariable("errorMessage", error.getMessage());
+					ctx.setVariable("transferAmountEuros", amount / 100);
+					ctx.setVariable("transferAmountCents", String.format("%02d", amount % 100));
 
-                templateEngine.process(path, ctx, response.getWriter());
+					// ctx.setVariable("cause", cause);
 
+					ctx.setVariable("errorMessage", error.getMessage());
 
-            } catch (SQLException e) {
-                throw new ServletException("Can't find account");
-            }
-        } else {
-            response.sendRedirect("/login");
-        }
+					templateEngine.process(path, ctx, response.getWriter());
+
+				} catch (SQLException e) {
+					throw new ServletException("Can't find account");
+				}
+			} else {
+				response.sendRedirect("/login");
+			}
 		} finally {
 			destroy();
 		}
-    }
+	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
 	public void destroy() {
-	    // Close the connection
-	    if (connection != null)
-	      try {
-	    	  connection.close();
-	      } catch (SQLException ignore) {
-	      }
-	  }
+		// Close the connection
+		if (connection != null)
+			try {
+				connection.close();
+			} catch (SQLException ignore) {
+			}
+	}
 }
