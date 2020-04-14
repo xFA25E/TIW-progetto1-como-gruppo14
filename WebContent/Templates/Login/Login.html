@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/Bank/assets/css/styles_login.css">
+		<title>Login</title>
+	</head>
+	<body>
+		<div id="container">
+			<div>
+				<div id="border-block">
+					<img id="logo" src="/Bank/assets/images/bank.png">
+				</div>
+			</div>
+			<div>
+				<form action="/Bank/authenticate" method="POST">
+					<label>Nome Utente</label>
+					<br>
+					<input type="text" id="name" name="user-name" required>
+					<br>
+					<br>
+					<label>Password</label>
+					<br>
+					<input type="password" id="password" name="password" required>
+					<br>
+					<br>
+					<input type="submit" value="Log In">
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
