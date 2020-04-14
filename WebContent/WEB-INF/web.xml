@@ -62,6 +62,33 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>CreateTransfer</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.CreateTransfer</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateTransfer</servlet-name>
+        <url-pattern>/create-transfer</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TransferSuccessful</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.TransferSuccessful</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TransferSuccessful</servlet-name>
+        <url-pattern>/transfer-successful</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TransferFailed</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.TransferFailed</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TransferFailed</servlet-name>
+        <url-pattern>/transfer-failed</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Forget</servlet-name>
         <servlet-class>it.polimi.tiw.bank.controllers.Forget</servlet-class>
     </servlet>

@@ -56,7 +56,7 @@ public class TransferDao {
 	}
 
 	public long createTransfer(long sourceAccountId, long destinationAccountId, long destinationCustomerId, long amount,
-			String cause) throws SQLException {
+			String cause) throws SQLException, Exception {
 		String query = "SELECT customer_id FROM account WHERE account_id = ? AND customer_id = ?";
 
 		ResultSet result = null;
@@ -68,7 +68,7 @@ public class TransferDao {
 			pstatement.setLong(2, destinationCustomerId);
 			result = pstatement.executeQuery();
 			if (!result.next()) {
-				throw new SQLException("L'account immesso non appartiene all'utente inserito");
+				throw new Exception("L'account immesso non appartiene all'utente inserito");
 			}
 
 		} catch (SQLException e) {
@@ -103,7 +103,7 @@ public class TransferDao {
 			int affectedRows = pstatement.executeUpdate();
 
 			if (affectedRows == 0) {
-				throw new SQLException("Non si dispone dei fondi necessari per effettuare il bonifico");
+				throw new Exception("Non si dispone dei fondi necessari per effettuare il bonifico");
 			}
 
 			try (ResultSet generatedKeys = pstatement.getGeneratedKeys()) {

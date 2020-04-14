@@ -75,7 +75,7 @@ public class CreateTransfer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request, response);
 	}
 
 	/**
@@ -91,10 +91,10 @@ public class CreateTransfer extends HttpServlet {
 			AccountDao accountDao = new AccountDao(connection);
 			TransferDao transferDao = new TransferDao(connection);
 
-			Long sourceAccountId = Long.getLong(request.getParameter("source-account-id"));
-			Long destinationCustomerId = Long.getLong(request.getParameter("destination-account-id"));
-			Long destinationAccountId = Long.getLong(request.getParameter("destination-account-id"));
-			Long amount = Long.getLong(request.getParameter("amount"));
+			Long sourceAccountId = Long.parseLong(request.getParameter("source-account"));
+			Long destinationCustomerId = Long.parseLong(request.getParameter("destination-customer"));
+			Long destinationAccountId = Long.parseLong(request.getParameter("destination-account"));
+			Long amount = Long.parseLong(request.getParameter("amount").replace(",", ""));
 			String cause = request.getParameter("cause");
 			long customerId = (long) session.getAttribute("CUSTOMERID");
 
@@ -102,6 +102,11 @@ public class CreateTransfer extends HttpServlet {
 				response.sendError(505, "Parameters incomplete");
 				return;
 			}
+
+			session.setAttribute("sourceAccountId", sourceAccountId);
+			session.setAttribute("destinationAccountId", destinationAccountId);
+			session.setAttribute("destinationCustomerId", destinationCustomerId);
+			session.setAttribute("amount", amount);
 
 			try {
 
@@ -113,43 +118,13 @@ public class CreateTransfer extends HttpServlet {
 				}
 
 				transferDao.createTransfer(sourceAccountId, destinationAccountId, destinationCustomerId, amount, cause);
-				
-				Account account = accountDao.findAccountByAccountId(sourceAccountId);
-				long updatedAccountAmountEuro = account.getEuros();
-				String updatedAccountAmountCents = account.getCents();
-
-				String path = "/Templates/Transfer/TransferSuccessful.html";
-				ServletContext servletContext = getServletContext();
-				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-				ctx.setVariable("sourceAccountId", sourceAccountId);
-
-				ctx.setVariable("destinationAccountId", destinationAccountId);
-				ctx.setVariable("destinationCustomerId", destinationCustomerId);
-
-				ctx.setVariable("transferAmountEuros", amount / 100);
-				ctx.setVariable("transferAmountCents", String.format("%02d", amount % 100));
-
-				ctx.setVariable("updatedAccountAmountEuro", updatedAccountAmountEuro);
-				ctx.setVariable("updatedAccountAmountCents", updatedAccountAmountCents);
-
-//				ctx.setVariable("cause", cause);
-
-				templateEngine.process(path, ctx, response.getWriter());
+				response.sendRedirect("/Bank/transfer-successful");
 
 			} catch (SQLException e) {
-				String path = "/Templates/Transfer/TransferFailed.html";
-				ServletContext servletContext = getServletContext();
-				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-				ctx.setVariable("sourceAccountId", sourceAccountId);
-
-				ctx.setVariable("destinationAccountId", destinationAccountId);
-				ctx.setVariable("destinationCustomerId", destinationCustomerId);
-
-//				ctx.setVariable("cause", cause);
-
-				ctx.setVariable("errorMessage", e.getMessage());
-
-				templateEngine.process(path, ctx, response.getWriter());
+				response.sendRedirect("/Bank/account?account-id=" + sourceAccountId);
+			} catch (Exception e) {
+				session.setAttribute("error", e);
+				response.sendRedirect("/Bank/transfer-failed");
 			}
 
 		} else {

@@ -79,7 +79,12 @@ public class GetAccountPage extends HttpServlet {
 	            AccountDao accountDao = new AccountDao(connection);
 	            TransferDao trasferDao = new TransferDao(connection);
 	            long customerId = (long) session.getAttribute("CUSTOMERID");
-	            long accountId = Long.parseLong(request.getParameter("account-id"), 10);
+	            String accId = request.getParameter("account-id");
+	            if (accId == null) {
+	            	response.sendRedirect("/Bank/home");
+	            	return;
+	            }
+	            long accountId = Long.parseLong(accId, 10);
 
 	            try {
 	                Customer customer = customerDao.findCustomerById(customerId);
@@ -104,7 +109,7 @@ public class GetAccountPage extends HttpServlet {
                     }
 
 
-	                if (customer == null || account == null) {
+	                if (customer == null || account == null || customerId != account.getCustomerId()) {
 	                    session.invalidate();
 	                    response.sendRedirect("/Bank/login");
 	                } else {

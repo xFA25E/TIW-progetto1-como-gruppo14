@@ -16,14 +16,14 @@
 
         <div id="status">
             <div>
-                Denaro incassato questo mese:<br>
+                Denaro speso questo mese:<br>
                 <strong>
                     &euro;
                     <span th:text="${spentEuros} + |,| + ${spentCents}">500,00</span>
                 </strong>
             </div>
             <div>
-                Denaro speso questo mese:<br>
+                Denaro incassato questo mese:<br>
                 <strong>
                     &euro;
                     <span th:text="${earnedEuros} + |,| + ${spentCents}">500,00</span>
@@ -82,13 +82,13 @@
             </div>
             <div id="payment">
                 <div id="payment-background">
-                    <form>
+                    <form action="/Bank/create-transfer" method="POST">
                         <fieldset>
-                        <legend>Effettua un bonifico</legend>
-
-                        <div>
-                            <label for="destination-customer">
-                                Codice Destinatario
+                            <legend>Effettua un bonifico</legend>
+                            <input name="source-account" type="hidden" th:attr="value=${accountId}">
+                            <div>
+                                <label for="destination-customer">
+                                    Codice Destinatario
                             </label>
                             <input name="destination-customer" type="number"
                                    placeholder=" 112" required>
@@ -115,8 +115,7 @@
 
                         <div>
                             <label for="cause">Causale</label>
-                            <textarea rows="7" name="cause" maxlength="255">
-                            </textarea>
+                            <textarea rows="7" name="cause" maxlength="255"></textarea>
                         </div>
 
                         <div><input type="submit" value="Invia"></div>
