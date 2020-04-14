@@ -36,7 +36,7 @@
 
     <servlet>
         <servlet-name>Home</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.Home</servlet-class>
+        <servlet-class>it.polimi.tiw.bank.controllers.GetAccounts</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
