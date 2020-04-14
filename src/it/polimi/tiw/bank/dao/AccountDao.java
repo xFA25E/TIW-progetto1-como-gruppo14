@@ -79,7 +79,7 @@ public class AccountDao {
             "            OR destination_account_id = a.account_id) AS last_edit " +
             "  FROM account AS a " +
             "         JOIN account_total_amount AS t USING (account_id) " +
-            " WHERE a.customer_id = ?";
+            " WHERE a.account_id = ?";
     	ResultSet result = null;
     	PreparedStatement pstatement = null;
     	try {

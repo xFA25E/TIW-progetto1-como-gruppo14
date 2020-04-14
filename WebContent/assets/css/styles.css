@@ -125,7 +125,7 @@ body {
 }
 
 #payment-background {
-    background-image: url("electronic-payments.jpg");
+    background-image: url("/Bank/assets/images/electronic-payments.jpg");
     background-size: cover;
     height: 100%;
     width: 100%;

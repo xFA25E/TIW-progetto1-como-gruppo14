@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -35,7 +36,7 @@ public class GetAccountPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Connection connection = null;
     private TemplateEngine templateEngine;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -43,7 +44,7 @@ public class GetAccountPage extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
+
     public void init() throws ServletException {
         try {
             ServletContext context = getServletContext();
@@ -58,7 +59,7 @@ public class GetAccountPage extends HttpServlet {
         } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
         }
-        
+
         ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -78,24 +79,31 @@ public class GetAccountPage extends HttpServlet {
 	            AccountDao accountDao = new AccountDao(connection);
 	            TransferDao trasferDao = new TransferDao(connection);
 	            long customerId = (long) session.getAttribute("CUSTOMERID");
-	            long accountId = (long) request.getAttribute("ACCOUNTID");
-	            
+	            long accountId = Long.parseLong(request.getParameter("account-id"), 10);
+
 	            try {
 	                Customer customer = customerDao.findCustomerById(customerId);
 	                Account account = accountDao.findAccountByAccountId(accountId);
 	                List<Transfer> transfersList = trasferDao.findByAccountId(accountId);
-	                long earnedMoney = 0;
-	                long depositedMoney = 0;
-	                
-	                for (Transfer transfer : transfersList) {
-	                	if (transfer.getSourceAccountId() == accountId) {
-	                		depositedMoney += transfer.getAmount();
-	                	} else {
-	                		earnedMoney += transfer.getAmount();
-	                	}
-	                }
-	                
-	                
+	                long earnedAmount = 0;
+	                long spentAmount = 0;
+                    Calendar today = Calendar.getInstance();
+                    today.set(Calendar.HOUR_OF_DAY, 0);
+
+                    for (Transfer transfer : transfersList) {
+                        Calendar transferDate = Calendar.getInstance();
+                        transferDate.setTime(transfer.getCreationDate());
+
+                        if (today.get(Calendar.MONTH) == transferDate.get(Calendar.MONTH)) {
+                            if (transfer.getSourceAccountId() == accountId) {
+                                spentAmount += transfer.getAmount();
+                            } else {
+                                earnedAmount += transfer.getAmount();
+                            }
+                        }
+                    }
+
+
 	                if (customer == null) {
 	                    session.invalidate();
 	                    response.sendRedirect("/Bank/login");
@@ -104,11 +112,11 @@ public class GetAccountPage extends HttpServlet {
 	            		ServletContext servletContext = getServletContext();
 	            		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 	                    ctx.setVariable("accountId", accountId);
-	                    ctx.setVariable("amount", account.getAmount());
-	                    ctx.setVariable("earnedMoney", earnedMoney);
-	                    ctx.setVariable("depositedMoney", depositedMoney);
+                        ctx.setVariable("amount", account.getAmount());
+	                    ctx.setVariable("earnedAmount", earnedAmount);
+	                    ctx.setVariable("spentAmount", spentAmount);
 	                    ctx.setVariable("transfers", transfersList);
-	                    
+
 	                    templateEngine.process(path, ctx, response.getWriter());
 	                }
 	            } catch (SQLException e) {

@@ -44,6 +44,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Account</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.GetAccountPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Account</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Authenticate</servlet-name>
         <servlet-class>it.polimi.tiw.bank.controllers.Authenticate</servlet-class>
     </servlet>

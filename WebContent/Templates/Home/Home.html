@@ -31,19 +31,23 @@
                 </thead>
 
                 <tbody th:remove="all-but-first" th:each="account : ${accounts}">
-                    <tr onclick="window.location='account.html';">
+
+                    <tr onclick="window.location='account';"
+
+                        th:attr="onclick=|window.location=&apos;account?account-id=| + ${account.accountId} + |&apos;|">
+
                         <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
                         <td><span th:text="${account.accountId}">2020</span></td>
                         <td>&euro;<span th:text="${account.amount}">23423,00</span></td>
                         <td><span th:text="${account.lastEdit}">20/20/20</span></td>
                     </tr>
-                    <tr onclick="window.location='account.html';">
+                    <tr onclick="window.location='account';">
                         <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
                         <td>2020</td>
                         <td>&euro;23423,00</td>
                         <td>20/20/20</td>
                     </tr>
-                    <tr onclick="window.location='account.html';">
+                    <tr onclick="window.location='account';">
                         <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
                         <td>2020</td>
                         <td>&euro;23423,00</td>

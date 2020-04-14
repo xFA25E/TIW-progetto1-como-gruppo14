@@ -19,7 +19,7 @@ public class TransferDao {
 
 	public List<Transfer> findByAccountId(long accountId) throws SQLException {
 		List<Transfer> transfers = new ArrayList<Transfer>();
-		String query = "SELECT * FROM transfer WHERE source_account_id = ? OR destination_account_id = ?";
+		String query = "SELECT * FROM transfer WHERE source_account_id = ? OR destination_account_id = ? ORDER BY creation_time DESC";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
 		try {
