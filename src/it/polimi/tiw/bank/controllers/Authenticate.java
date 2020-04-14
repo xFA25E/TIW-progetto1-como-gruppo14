@@ -23,97 +23,97 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/Authenticate")
 public class Authenticate extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private Connection connection = null;
+	private static final long serialVersionUID = 1L;
+	private Connection connection = null;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Authenticate() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public Authenticate() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public void init() throws ServletException {
-        try {
-            ServletContext context = getServletContext();
-            String driver = context.getInitParameter("dbDriver");
-            String url = context.getInitParameter("dbUrl");
-            String user = context.getInitParameter("dbUser");
-            String password = context.getInitParameter("dbPassword");
-            Class.forName(driver);
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (ClassNotFoundException e) {
-            throw new UnavailableException("Can't load database driver");
-        } catch (SQLException e) {
-            throw new UnavailableException("Couldn't get db connection");
-        }
-    }
+	public void init() throws ServletException {
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-        throws ServletException, IOException {
+	}
 
-    	try {
-    		init();
-        if (request.getSession(false) != null) {
-            response.sendRedirect("/home");
-        } else {
-            String userName = request.getParameter("user-name");
-            String password = request.getParameter("password");
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
 
-            if (userName == null || userName.isEmpty()
-                || password == null || password.isEmpty()) {
-                response.sendRedirect("/login");
-            } else {
-                CustomerDao customerDao = new CustomerDao(connection);
-                try {
-                    Customer customer = customerDao.findCustomerByUserName(userName);
+			try {
+				ServletContext context = getServletContext();
+				String driver = context.getInitParameter("dbDriver");
+				String url = context.getInitParameter("dbUrl");
+				String user = context.getInitParameter("dbUser");
+				String password = context.getInitParameter("dbPassword");
+				Class.forName(driver);
+				connection = DriverManager.getConnection(url, user, password);
+			} catch (ClassNotFoundException e) {
+				throw new UnavailableException("Can't load database driver");
+			} catch (SQLException e) {
+				throw new UnavailableException("Couldn't get db connection");
+			}
+			
+			if (request.getSession(false) != null) {
+				response.sendRedirect("/home");
+			} else {
+				String userName = request.getParameter("user-name");
+				String password = request.getParameter("password");
 
-                    if (customer == null) {
-                        response.sendRedirect("/login");
-                    } else {
-                        String hash = customer.getPasswordHash();
-                        String salt = customer.getPasswordSalt();
+				if (userName == null || userName.isEmpty() || password == null || password.isEmpty()) {
+					response.sendRedirect("/login");
+				} else {
+					CustomerDao customerDao = new CustomerDao(connection);
+					try {
+						Customer customer = customerDao.findCustomerByUserName(userName);
 
-                        if (PasswordManager.verifyPassword(password, hash, salt)) {
-                            HttpSession session = request.getSession(true);
-                            session.setAttribute("CUSTOMERID", customer.getCustomerId());
-                            response.sendRedirect("/home");
-                        } else {
-                            response.sendRedirect("/login");
-                        }
-                    }
-                } catch (SQLException e) {
-                	throw new ServletException(e.getMessage());
-                    // response.sendRedirect("/login");
-                }
-            }
-        }
-    	} finally {
-    		destroy();
-    	}
-    }
+						if (customer == null) {
+							response.sendRedirect("/login");
+						} else {
+							String hash = customer.getPasswordHash();
+							String salt = customer.getPasswordSalt();
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-        throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doPost(request, response);
-    }
+							if (PasswordManager.verifyPassword(password, hash, salt)) {
+								HttpSession session = request.getSession(true);
+								session.setAttribute("CUSTOMERID", customer.getCustomerId());
+								response.sendRedirect("/home");
+							} else {
+								response.sendRedirect("/login");
+							}
+						}
+					} catch (SQLException e) {
+						throw new ServletException(e.getMessage());
+						// response.sendRedirect("/login");
+					}
+				}
+			}
+		} finally {
+			destroy();
+		}
+	}
 
-    public void destroy() {
-	    // Close the connection
-	    if (connection != null)
-	    	try {
-	    		connection.close();
-	    	} catch (SQLException ignore) {
-	    	}
-	  }
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
+
+	public void destroy() {
+		// Close the connection
+		if (connection != null)
+			try {
+				connection.close();
+			} catch (SQLException ignore) {
+			}
+	}
 }

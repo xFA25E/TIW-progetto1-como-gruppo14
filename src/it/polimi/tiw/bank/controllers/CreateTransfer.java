@@ -46,20 +46,6 @@ public class CreateTransfer extends HttpServlet {
 	}
 
 	public void init() throws ServletException {
-		try {
-			ServletContext context = getServletContext();
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
-			throw new UnavailableException("Couldn't get db connection");
-		}
-
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -73,7 +59,7 @@ public class CreateTransfer extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
@@ -83,67 +69,81 @@ public class CreateTransfer extends HttpServlet {
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
+			throws ServletException, IOException {
 		try {
-			init();
-		HttpSession session = request.getSession(false);
-
-		if (session != null) {
-			CustomerDao customerDao = new CustomerDao(connection);
-			AccountDao accountDao = new AccountDao(connection);
-			TransferDao transferDao = new TransferDao(connection);
-
-			Long sourceAccountId = Long.parseLong(request.getParameter("source-account"));
-			Long destinationCustomerId = Long.parseLong(request.getParameter("destination-customer"));
-			Long destinationAccountId = Long.parseLong(request.getParameter("destination-account"));
-			Long amount = Long.parseLong(request.getParameter("amount").replace(",", ""));
-			String cause = request.getParameter("cause");
-			long customerId = (long) session.getAttribute("CUSTOMERID");
-
-			if (destinationCustomerId == null || destinationAccountId == null || amount == null || cause == null) {
-				response.sendError(505, "Parameters incomplete");
-				return;
-			}
-
-			session.setAttribute("sourceAccountId", sourceAccountId);
-			session.setAttribute("destinationAccountId", destinationAccountId);
-			session.setAttribute("destinationCustomerId", destinationCustomerId);
-			session.setAttribute("amount", amount);
 
 			try {
+				ServletContext context = getServletContext();
+				String driver = context.getInitParameter("dbDriver");
+				String url = context.getInitParameter("dbUrl");
+				String user = context.getInitParameter("dbUser");
+				String password = context.getInitParameter("dbPassword");
+				Class.forName(driver);
+				connection = DriverManager.getConnection(url, user, password);
+			} catch (ClassNotFoundException e) {
+				throw new UnavailableException("Can't load database driver");
+			} catch (SQLException e) {
+				throw new UnavailableException("Couldn't get db connection");
+			}
 
-				Customer customer = customerDao.findCustomerById(customerId);
-				if (customer == null) {
-					session.invalidate();
-					response.sendRedirect("/login");
+			HttpSession session = request.getSession(false);
+
+			if (session != null) {
+				CustomerDao customerDao = new CustomerDao(connection);
+				AccountDao accountDao = new AccountDao(connection);
+				TransferDao transferDao = new TransferDao(connection);
+
+				Long sourceAccountId = Long.parseLong(request.getParameter("source-account"));
+				Long destinationCustomerId = Long.parseLong(request.getParameter("destination-customer"));
+				Long destinationAccountId = Long.parseLong(request.getParameter("destination-account"));
+				Long amount = Long.parseLong(request.getParameter("amount").replace(",", ""));
+				String cause = request.getParameter("cause");
+				long customerId = (long) session.getAttribute("CUSTOMERID");
+
+				if (destinationCustomerId == null || destinationAccountId == null || amount == null || cause == null) {
+					response.sendError(505, "Parameters incomplete");
 					return;
 				}
 
-				transferDao.createTransfer(sourceAccountId, destinationAccountId, destinationCustomerId, amount, cause);
-				response.sendRedirect("/transfer-successful");
+				session.setAttribute("sourceAccountId", sourceAccountId);
+				session.setAttribute("destinationAccountId", destinationAccountId);
+				session.setAttribute("destinationCustomerId", destinationCustomerId);
+				session.setAttribute("amount", amount);
 
-			} catch (SQLException e) {
-				response.sendRedirect("/account?account-id=" + sourceAccountId);
-			} catch (Exception e) {
-				session.setAttribute("error", e);
-				response.sendRedirect("/transfer-failed");
+				try {
+
+					Customer customer = customerDao.findCustomerById(customerId);
+					if (customer == null) {
+						session.invalidate();
+						response.sendRedirect("/login");
+						return;
+					}
+
+					transferDao.createTransfer(sourceAccountId, destinationAccountId, destinationCustomerId, amount,
+							cause);
+					response.sendRedirect("/transfer-successful");
+
+				} catch (SQLException e) {
+					response.sendRedirect("/account?account-id=" + sourceAccountId);
+				} catch (Exception e) {
+					session.setAttribute("error", e);
+					response.sendRedirect("/transfer-failed");
+				}
+
+			} else {
+				response.sendRedirect("/login");
 			}
-
-		} else {
-			response.sendRedirect("/login");
-		}
 		} finally {
 			destroy();
 		}
 	}
 
 	public void destroy() {
-	    // Close the connection
-	    if (connection != null)
-	      try {
-	    	  connection.close();
-	      } catch (SQLException ignore) {
-	      }
-	  }
+		// Close the connection
+		if (connection != null)
+			try {
+				connection.close();
+			} catch (SQLException ignore) {
+			}
+	}
 }
