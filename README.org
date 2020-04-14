@@ -17,6 +17,12 @@
   and *delete* users, *create* and *delete* bank accounts and *change* the
   /deposited amount/ of an account.
 
+* Existing Users
   Is also possbile to test app using this access credentials:
-  | user | progetto |
-  | pass | progetto |
+
+  | user             | pass             |
+  |------------------+------------------|
+  | gregory_melendez | gregory_melendez |
+  | weston_rasmussen | weston_rasmussen |
+  | neva_kidd        | neva_kidd        |
+  | marcus_shannon   | marcus_shannon   |
