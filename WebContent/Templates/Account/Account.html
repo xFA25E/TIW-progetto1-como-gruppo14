@@ -2,13 +2,13 @@
 <html>
     <head>
         <title>Account</title>
-        <link rel="stylesheet" href="/Bank/assets/css/styles.css" type="text/css">
+        <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
     </head>
 
     <body>
         <div id="header">
             <div id="menu">
-                <a href="/Bank/home"><img alt="Home" src="/Bank/assets/images/home-solid.svg"></a>
+                <a href="/home"><img alt="Home" src="/assets/images/home-solid.svg"></a>
             </div>
             <div><h2>Conto <span th:text="${accountId}">2020</span></h2></div>
             <div><h2>Saldo: <span th:text="${euros} + |,| + ${cents}">300,00 </span> &euro;</h2></div>
@@ -38,7 +38,7 @@
                     <table th:remove="all-but-first" th:each="transfer : ${transfers}">
                         <tr th:class="(${transfer.sourceAccountId} == ${accountId})? 'export' : 'import '" class="import">
                             <td>
-                                <img th:attr="src=|/Bank/assets/images/| + ((${transfer.sourceAccountId} == ${accountId})? 'upload.png' : 'download.png')"
+                                <img th:attr="src=|/assets/images/| + ((${transfer.sourceAccountId} == ${accountId})? 'upload.png' : 'download.png')"
                                      alt="download"
                                      width="32" height="32">
                             </td>
@@ -60,20 +60,20 @@
                                 <em><span th:text="${transfer.creationDate}">01/01/2020</span></em>
                             </td>
                             <td th:title="${transfer.cause}" title="la mia bella causa">
-                                <img src="/Bank/assets/images/icons8-help-64.png"
+                                <img src="/assets/images/icons8-help-64.png"
                                      height="32" width="32">
                             </td>
                         </tr>
                         <tr class="export">
                             <td>
-                                <img src="/Bank/assets/images/upload.png" alt="download" width="32"
+                                <img src="/assets/images/upload.png" alt="download" width="32"
                                      height="32">
                             </td>
                             <td><strong>Giovanni (2020)</strong></td>
                             <td><strong>&euro; -300,00</strong></td>
                             <td><em>01/01/2020</em></td>
                             <td title="la mia bella causa">
-                                <img src="/Bank/assets/images/icons8-help-64.png"
+                                <img src="/assets/images/icons8-help-64.png"
                                      height="32" width="32">
                             </td>
                         </tr>
@@ -82,7 +82,7 @@
             </div>
             <div id="payment">
                 <div id="payment-background">
-                    <form action="/Bank/create-transfer" method="POST">
+                    <form action="/create-transfer" method="POST">
                         <fieldset>
                             <legend>Effettua un bonifico</legend>
                             <input name="source-account" type="hidden" th:attr="value=${accountId}">

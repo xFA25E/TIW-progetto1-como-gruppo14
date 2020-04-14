@@ -2,17 +2,17 @@
 <html>
     <head>
         <title>Customer</title>
-        <link rel="stylesheet" href="/Bank/assets/css/styles.css" type="text/css">
+        <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
     </head>
 
     <body>
         <div id="header">
             <div id="menu">
-                <a href="#"><img alt="Home" src="/Bank/assets/images/home-solid.svg"></a>
+                <a href="#"><img alt="Home" src="/assets/images/home-solid.svg"></a>
             </div>
             <div><h2><span th:text="${fullName}">Alessio Spagnolo</span></h2></div>
             <div>
-                <form action="/Bank/forget" method="post">
+                <form action="/forget" method="post">
                     <input type="submit" value="Log Out">
                 </form>
             </div>
@@ -36,19 +36,19 @@
 
                         th:attr="onclick=|window.location=&apos;account?account-id=| + ${account.accountId} + |&apos;|">
 
-                        <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
+                        <td><img src="/assets/images/bank-card-back-side.png"></td>
                         <td><span th:text="${account.accountId}">2020</span></td>
                         <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
                         <td><span th:text="${account.lastEdit}">20/20/20</span></td>
                     </tr>
                     <tr onclick="window.location='account';">
-                        <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
+                        <td><img src="/assets/images/bank-card-back-side.png"></td>
                         <td>2020</td>
                         <td>&euro;23423,00</td>
                         <td>20/20/20</td>
                     </tr>
                     <tr onclick="window.location='account';">
-                        <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
+                        <td><img src="/assets/images/bank-card-back-side.png"></td>
                         <td>2020</td>
                         <td>&euro;23423,00</td>
                         <td>20/20/20</td>

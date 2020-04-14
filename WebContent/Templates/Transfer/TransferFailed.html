@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<link rel="stylesheet" href="/Bank/assets/css/styles_transfer_failed.css">
-	<title>Bonifico Fallito</title>
+	    <link rel="stylesheet" href="/assets/css/styles_transfer_failed.css">
+	    <title>Bonifico Fallito</title>
 	</head>
 	<body>
 		<div id="header">
             <div id="menu">
-				<a href="#" th:attr="href=|/Bank/account?account-id=| + ${sourceAccountId}"> <img src="/Bank/assets/images/home-solid.svg"></a>
+				<a href="#" th:attr="href=|/account?account-id=| + ${sourceAccountId}"> <img src="/assets/images/home-solid.svg"></a>
             </div>
             <div>
 				<h2> Conto <span th:text="${sourceAccountId}">2020</span></h2>
@@ -37,6 +37,6 @@
 				</tr>
 			</table>
 		</div>
-		<a id="return" href="#" th:attr="href=|/Bank/account?account-id=| + ${sourceAccountId}"><h2>Ritorna alla pagina</h2></a>
+		<a id="return" href="#" th:attr="href=|/account?account-id=| + ${sourceAccountId}"><h2>Ritorna alla pagina</h2></a>
 	</body>
 </html>
