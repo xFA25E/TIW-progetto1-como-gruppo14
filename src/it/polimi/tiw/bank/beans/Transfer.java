@@ -30,6 +30,15 @@ public class Transfer {
         return amount;
     }
     
+    
+    public long getEuros() {
+		return amount / 100;
+	}
+	
+    public String getCents() {
+		return String.format("%02d", amount % 100);
+	}
+	
     public String getCause() {
         return cause;
     }

@@ -11,7 +11,7 @@
                 <a href="/Bank/home"><img alt="Home" src="/Bank/assets/images/home-solid.svg"></a>
             </div>
             <div><h2>Conto <span th:text="${accountId}">2020</span></h2></div>
-            <div><h2>Saldo: <span th:text="${amount}">300,00 </span> &euro;</h2></div>
+            <div><h2>Saldo: <span th:text="${euros} + |,| + ${cents}">300,00 </span> &euro;</h2></div>
         </div>
 
         <div id="status">
@@ -19,14 +19,14 @@
                 Denaro incassato questo mese:<br>
                 <strong>
                     &euro;
-                    <span th:text="${spentAmount}">500,00</span>
+                    <span th:text="${spentEuros} + |,| + ${spentCents}">500,00</span>
                 </strong>
             </div>
             <div>
                 Denaro speso questo mese:<br>
                 <strong>
                     &euro;
-                    <span th:text="${earnedAmount}">500,00</span>
+                    <span th:text="${earnedEuros} + |,| + ${spentCents}">500,00</span>
                 </strong>
             </div>
         </div>
@@ -50,10 +50,10 @@
                             </td>
                             <td>
                                 <strong>
-                                    &euro;
-                                    <span th:text="(((${transfer.sourceAccountId} == ${accountId})? '-' : '+') + ${transfer.amount})">
+                                    <span th:text="(((${transfer.sourceAccountId} == ${accountId})? '-' : '+') + ${transfer.euros} + |,| + ${transfer.cents})">
                                         +300,00
                                     </span>
+                                    &euro;
                                 </strong>
                             </td>
                             <td>
@@ -85,6 +85,14 @@
                     <form>
                         <fieldset>
                         <legend>Effettua un bonifico</legend>
+
+                        <div>
+                            <label for="destination-customer">
+                                Codice Destinatario
+                            </label>
+                            <input name="destination-customer" type="number"
+                                   placeholder=" 112" required>
+                        </div>
 
                         <div>
                             <label for="destination-account">

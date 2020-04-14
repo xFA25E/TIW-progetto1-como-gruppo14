@@ -104,7 +104,7 @@ public class GetAccountPage extends HttpServlet {
                     }
 
 
-	                if (customer == null) {
+	                if (customer == null || account == null) {
 	                    session.invalidate();
 	                    response.sendRedirect("/Bank/login");
 	                } else {
@@ -112,10 +112,17 @@ public class GetAccountPage extends HttpServlet {
 	            		ServletContext servletContext = getServletContext();
 	            		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 	                    ctx.setVariable("accountId", accountId);
-                        ctx.setVariable("amount", account.getAmount());
-	                    ctx.setVariable("earnedAmount", earnedAmount);
-	                    ctx.setVariable("spentAmount", spentAmount);
-	                    ctx.setVariable("transfers", transfersList);
+
+                        ctx.setVariable("euros", account.getAmount() / 100);
+                        ctx.setVariable("cents", String.format("%02d", account.getAmount() % 100));
+
+                        ctx.setVariable("earnedEuros", earnedAmount / 100);
+	                    ctx.setVariable("earnedCents", String.format("%02d", earnedAmount % 100));
+
+                        ctx.setVariable("spentEuros", spentAmount / 100);
+                        ctx.setVariable("spentCents", String.format("%02d", spentAmount % 100));
+
+                        ctx.setVariable("transfers", transfersList);
 
 	                    templateEngine.process(path, ctx, response.getWriter());
 	                }

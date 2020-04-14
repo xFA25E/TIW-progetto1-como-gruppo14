@@ -170,12 +170,12 @@ body {
     flex-direction: row-reverse;
 }
 
-#payment form div:nth-child(4) {
+#payment form div:nth-child(5) {
     align-items: flex-start;
     flex-direction: column;
 }
 
-#payment form div:nth-child(4) textarea {
+#payment form div:nth-child(5) textarea {
     width: 100%;
     margin-top: 30px;
 }
@@ -186,7 +186,7 @@ body {
 }
 
 #payment form div input,
-#payment form div:nth-child(4) textarea {
+#payment form div:nth-child(5) textarea {
     font-size: 1.2em;
     border: 2px solid black;
     border-radius: 3px;
@@ -197,19 +197,21 @@ body {
     border: none;
     padding: 12px 30px;
     text-decoration: none;
-    /* margin: 4px 2px; */
     cursor: pointer;
     align-self: flex-end;
 }
 
 /* Chrome, Safari, Edge, Opera */
 input[name=destination-account]::-webkit-outer-spin-button,
-input[name=destination-account]::-webkit-inner-spin-button {
+input[name=destination-account]::-webkit-inner-spin-button,
+input[name=destination-customer]::-webkit-outer-spin-button,
+input[name=destination-customer]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
 /* Firefox */
+input[name=destination-customer],
 input[name=destination-account] {
     -moz-appearance: textfield;
 }

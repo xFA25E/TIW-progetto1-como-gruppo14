@@ -38,7 +38,7 @@
 
                         <td><img src="/Bank/assets/images/bank-card-back-side.png"></td>
                         <td><span th:text="${account.accountId}">2020</span></td>
-                        <td>&euro;<span th:text="${account.amount}">23423,00</span></td>
+                        <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
                         <td><span th:text="${account.lastEdit}">20/20/20</span></td>
                     </tr>
                     <tr onclick="window.location='account';">

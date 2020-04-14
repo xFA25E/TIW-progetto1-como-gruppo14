@@ -24,6 +24,12 @@ public class Account {
 	public long getAmount() {
 		return amount;
 	}
+	public long getEuros() {
+		return amount / 100;
+	}
+	public String getCents() {
+		return String.format("%02d", amount % 100);
+	}
 	public void setAmount(long amount) {
 		this.amount = amount;
 	}
