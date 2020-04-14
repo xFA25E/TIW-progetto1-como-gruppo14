@@ -35,34 +35,32 @@
             <div id="transfers">
                 <div id="transfers-header"><h2>Trasferimenti</h2></div>
                 <div id="transfers-body">
-                    <table th:remove="all-but-first" th:each="transfer : ${transfers}" th:object="transfer">
-                        <tr th:class="*{srcAccount == session.accountId}? 'export' : 'import '" class="import">
+                    <table th:remove="all-but-first" th:each="transfer : ${transfers}">
+                        <tr th:class="${transfersrcAccount == session.accountId}? 'export' : 'import '" class="import">
                             <td>
                                 <img src="download.png" alt="download"
                                      width="32" height="32">
                             </td>
                             <td>
                                 <strong>
-                                    <span th:text="*{srcAccount == session.accountId}? *{dstAccountFullName} : *{srcAccountFullName}">
-                                        Giovanni
-                                    </span>
-                                    <span th:text="*{srcAccount == session.accountId}? *{dstAccount} : *{srcAccount}">
-                                        (2020)
-                                    </span>
+                                    <span th:text="${transfer.srcAccount == session.accountId}?
+                                                    (${transfer.dstAccountFullName} + ' ' ${transfer.dstAccount}) :
+                                                    (${transfer.srcAccountFullName} + ' ' + ${transfer.srcAccount}">
+                                        Giovanni 2020
                                 </strong>
                             </td>
                             <td>
                                 <strong>
                                     &euro;
-                                    <span th:text="((*{type} == earned?) '+' : '-') + *{amount}">
+                                    <span th:text="((${transfer.srcAccount == session.accountId} '-' : '+') + ${transfer.amount})">
                                         +300,00
                                     </span>
                                 </strong>
                             </td>
                             <td>
-                                <em><span th:text="((*{date}">01/01/2020</span></em>
+                                <em><span th:text="((${transfer.creationDate}">01/01/2020</span></em>
                             </td>
-                            <td th:title="*{cause}" title="la mia bella causa">
+                            <td th:title="${transfer.cause}" title="la mia bella causa">
                                 <img src="icons8-help-64.png"
                                      height="32" width="32">
                             </td>
