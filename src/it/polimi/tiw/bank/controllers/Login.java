@@ -41,14 +41,6 @@ public class Login extends HttpServlet {
                         + "Pass <input name=\"password\" type=\"text\" value=\"\">"
                         + "<input type=\"submit\" value=\"sabbamit\">"
                         + "</form>"
-                        + "<form action=\"/Bank/register\" method=\"POST\">"
-                        + "Full Name <input name=\"full-name\" type=\"text\" value=\"\">"
-                        + "<br>"
-                        + "User <input name=\"user-name\" type=\"text\" value=\"\">"
-                        + "<br>"
-                        + "Pass <input name=\"password\" type=\"text\" value=\"\">"
-                        + "<input type=\"submit\" value=\"register the sabbamit\">"
-                        + "</form>"
                         + "</body>");
         } else {
             response.sendRedirect("/Bank/home");

@@ -181,7 +181,7 @@ body {
 }
 
 #payment form div input[type=text],
-#payment form div input[type=number]{
+#payment form div input[type=number] {
     height: 30px;
 }
 
@@ -225,7 +225,7 @@ input[name=destination-account] {
 }
 
 #accounts table thead tr {
-    background-color: #d9e0e2;
+    background-color: #f4f3f3;
     color: #1f222b;
 }
 
@@ -233,17 +233,25 @@ input[name=destination-account] {
     cursor: pointer;
 }
 
+
 #accounts table tbody tr:hover {
-    background-color: #e0ddd4;
-    filter: invert(100%);
-    -webkit-filter: invert(100%);
+    background-color: #d9e0e2;
+    border-top: 1px solid #1f222b;
+    border-bottom: 1px solid #1f222b;
+}
+
+#accounts table td {
+    font-size: 1.3em;
+}
+
+#accounts table th {
+    font-size: 1.5em;
 }
 
 #accounts table th,
 #accounts table td {
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 1.3em;
 }
 
 #accounts table th,

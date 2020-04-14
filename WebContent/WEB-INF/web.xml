@@ -52,16 +52,6 @@
         <url-pattern>/authenticate</url-pattern>
     </servlet-mapping>
 
-
-	<servlet>
-        <servlet-name>Register</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.Register</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Register</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
-
     <servlet>
         <servlet-name>Forget</servlet-name>
         <servlet-class>it.polimi.tiw.bank.controllers.Forget</servlet-class>
@@ -71,14 +61,13 @@
         <url-pattern>/forget</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
-        <servlet-name>Delete</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.Delete</servlet-class>
+        <servlet-name>Admin</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.Admin</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Delete</servlet-name>
-        <url-pattern>/delete</url-pattern>
+        <servlet-name>Admin</servlet-name>
+        <url-pattern>/admin</url-pattern>
     </servlet-mapping>
 
 </web-app>
