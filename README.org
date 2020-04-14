@@ -11,8 +11,12 @@
   - Alessio Spagnolo
   - Gabriele Bianchi
   - Christian Premoli
-  
-At https://tiw-progetto4-group14.herokuapp.com/admin is possible to: create and delete users, create and delete bank accounts and select the "deposited amount".
-Is also possbile to test app using this access credentials:
-user: progetto
-pass: progetto
+
+* Additional Informations
+  At https://tiw-progetto4-group14.herokuapp.com/admin is possible to: create
+  and delete users, create and delete bank accounts and change the "deposited
+  amount" of an account.
+
+  Is also possbile to test app using this access credentials:
+  user: progetto
+  pass: progetto
