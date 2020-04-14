@@ -34,7 +34,7 @@ public class Forget extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("/Bank/home");
+        response.sendRedirect("/home");
     }
 
     /**

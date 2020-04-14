@@ -83,7 +83,7 @@ public class GetAccountPage extends HttpServlet {
 	            long customerId = (long) session.getAttribute("CUSTOMERID");
 	            String accId = request.getParameter("account-id");
 	            if (accId == null) {
-	            	response.sendRedirect("/Bank/home");
+	            	response.sendRedirect("/home");
 	            	return;
 	            }
 	            long accountId = Long.parseLong(accId, 10);
@@ -113,7 +113,7 @@ public class GetAccountPage extends HttpServlet {
 
 	                if (customer == null || account == null || customerId != account.getCustomerId()) {
 	                    session.invalidate();
-	                    response.sendRedirect("/Bank/login");
+	                    response.sendRedirect("/login");
 	                } else {
 	                	String path = "/Templates/Account/Account.html";
 	            		ServletContext servletContext = getServletContext();
@@ -135,10 +135,10 @@ public class GetAccountPage extends HttpServlet {
 	                }
 	            } catch (SQLException e) {
 	                session.invalidate();
-	                response.sendRedirect("/Bank/login");
+	                response.sendRedirect("/login");
 	            }
 	        } else {
-	            response.sendRedirect("/Bank/login");
+	            response.sendRedirect("/login");
 	        }
 		} finally {
 			destroy();
@@ -156,9 +156,9 @@ public class GetAccountPage extends HttpServlet {
 	public void destroy() {
 	    // Close the connection
 	    if (connection != null)
-	      try { 
-	    	  connection.close(); 
-	      } catch (SQLException ignore) { 	  
+	      try {
+	    	  connection.close();
+	      } catch (SQLException ignore) {
 	      }
 	  }
 }

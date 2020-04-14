@@ -61,7 +61,7 @@ public class TransferSuccessful extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 	}
-    
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -73,7 +73,7 @@ public class TransferSuccessful extends HttpServlet {
 
         if (session != null) {
         	AccountDao accountDao = new AccountDao(connection);
-        	
+
             Long sourceAccountId = (Long) session.getAttribute("sourceAccountId");
             Long destinationAccountId = (Long) session.getAttribute("destinationAccountId");
             Long destinationCustomerId = (Long) session.getAttribute("destinationCustomerId");
@@ -81,7 +81,7 @@ public class TransferSuccessful extends HttpServlet {
 
             try {
             	Account account = accountDao.findAccountByAccountId(sourceAccountId);
-            	
+
             	long updatedAccountAmountEuro = account.getEuros();
                 String updatedAccountAmountCents = account.getCents();
 
@@ -106,7 +106,7 @@ public class TransferSuccessful extends HttpServlet {
             	throw new ServletException("Can't find account");
             }
         } else {
-            response.sendRedirect("/Bank/login");
+            response.sendRedirect("/login");
         }
 		} finally {
 			destroy();
@@ -120,13 +120,13 @@ public class TransferSuccessful extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
+
 	public void destroy() {
 	    // Close the connection
 	    if (connection != null)
-	      try { 
-	    	  connection.close(); 
-	      } catch (SQLException ignore) { 	  
+	      try {
+	    	  connection.close();
+	      } catch (SQLException ignore) {
 	      }
 	  }
 

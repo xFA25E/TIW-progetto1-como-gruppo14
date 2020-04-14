@@ -34,7 +34,7 @@ public class GetAccounts extends HttpServlet {
     private static final long serialVersionUID = 1L;
     Connection connection = null;
     private TemplateEngine templateEngine;
-    
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -57,7 +57,7 @@ public class GetAccounts extends HttpServlet {
         } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
         }
-        
+
         ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -85,25 +85,25 @@ public class GetAccounts extends HttpServlet {
             try {
                 Customer customer = customerDao.findCustomerById(customerId);
                 List<Account> accountList = accountDao.findAllByCustomerId(customerId);
-                
+
                 if (customer == null) {
                     session.invalidate();
-                    response.sendRedirect("/Bank/login");
+                    response.sendRedirect("/login");
                 } else {
                 	String path = "/Templates/Home/Home.html";
             		ServletContext servletContext = getServletContext();
             		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
                     ctx.setVariable("fullName", customer.getFullName());
                     ctx.setVariable("accounts", accountList);
-                    
+
                     templateEngine.process(path, ctx, response.getWriter());
                 }
             } catch (SQLException e) {
                 session.invalidate();
-                response.sendRedirect("/Bank/login");
+                response.sendRedirect("/login");
             }
         } else {
-            response.sendRedirect("/Bank/login");
+            response.sendRedirect("/login");
         }
     	} finally {
     		destroy();
@@ -121,9 +121,9 @@ public class GetAccounts extends HttpServlet {
     public void destroy() {
 	    // Close the connection
 	    if (connection != null)
-	    	try { 
-	    		connection.close(); 
-	    	} catch (SQLException ignore) { 	  
+	    	try {
+	    		connection.close();
+	    	} catch (SQLException ignore) {
 	    	}
 	  }
 }

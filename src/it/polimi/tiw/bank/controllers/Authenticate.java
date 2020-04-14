@@ -60,21 +60,21 @@ public class Authenticate extends HttpServlet {
     	try {
     		init();
         if (request.getSession(false) != null) {
-            response.sendRedirect("/Bank/home");
+            response.sendRedirect("/home");
         } else {
             String userName = request.getParameter("user-name");
             String password = request.getParameter("password");
 
             if (userName == null || userName.isEmpty()
                 || password == null || password.isEmpty()) {
-                response.sendRedirect("/Bank/login");
+                response.sendRedirect("/login");
             } else {
                 CustomerDao customerDao = new CustomerDao(connection);
                 try {
                     Customer customer = customerDao.findCustomerByUserName(userName);
 
                     if (customer == null) {
-                        response.sendRedirect("/Bank/login");
+                        response.sendRedirect("/login");
                     } else {
                         String hash = customer.getPasswordHash();
                         String salt = customer.getPasswordSalt();
@@ -82,14 +82,14 @@ public class Authenticate extends HttpServlet {
                         if (PasswordManager.verifyPassword(password, hash, salt)) {
                             HttpSession session = request.getSession(true);
                             session.setAttribute("CUSTOMERID", customer.getCustomerId());
-                            response.sendRedirect("/Bank/home");
+                            response.sendRedirect("/home");
                         } else {
-                            response.sendRedirect("/Bank/login");
+                            response.sendRedirect("/login");
                         }
                     }
                 } catch (SQLException e) {
                 	throw new ServletException(e.getMessage());
-                    // response.sendRedirect("/Bank/login");
+                    // response.sendRedirect("/login");
                 }
             }
         }
@@ -111,9 +111,9 @@ public class Authenticate extends HttpServlet {
     public void destroy() {
 	    // Close the connection
 	    if (connection != null)
-	    	try { 
-	    		connection.close(); 
-	    	} catch (SQLException ignore) { 	  
+	    	try {
+	    		connection.close();
+	    	} catch (SQLException ignore) {
 	    	}
 	  }
 }

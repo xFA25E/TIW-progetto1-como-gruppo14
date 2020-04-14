@@ -39,7 +39,7 @@ public class Login extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 	}
-    
+
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
@@ -54,7 +54,7 @@ public class Login extends HttpServlet {
         	final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         	templateEngine.process(path, ctx, response.getWriter());
         } else {
-            response.sendRedirect("/Bank/home");
+            response.sendRedirect("/home");
         }
     }
 

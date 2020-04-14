@@ -84,7 +84,7 @@ public class CreateTransfer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-		
+
 		try {
 			init();
 		HttpSession session = request.getSession(false);
@@ -116,34 +116,34 @@ public class CreateTransfer extends HttpServlet {
 				Customer customer = customerDao.findCustomerById(customerId);
 				if (customer == null) {
 					session.invalidate();
-					response.sendRedirect("/Bank/login");
+					response.sendRedirect("/login");
 					return;
 				}
 
 				transferDao.createTransfer(sourceAccountId, destinationAccountId, destinationCustomerId, amount, cause);
-				response.sendRedirect("/Bank/transfer-successful");
+				response.sendRedirect("/transfer-successful");
 
 			} catch (SQLException e) {
-				response.sendRedirect("/Bank/account?account-id=" + sourceAccountId);
+				response.sendRedirect("/account?account-id=" + sourceAccountId);
 			} catch (Exception e) {
 				session.setAttribute("error", e);
-				response.sendRedirect("/Bank/transfer-failed");
+				response.sendRedirect("/transfer-failed");
 			}
 
 		} else {
-			response.sendRedirect("/Bank/login");
+			response.sendRedirect("/login");
 		}
 		} finally {
 			destroy();
 		}
 	}
-	
+
 	public void destroy() {
 	    // Close the connection
 	    if (connection != null)
-	      try { 
-	    	  connection.close(); 
-	      } catch (SQLException ignore) { 	  
+	      try {
+	    	  connection.close();
+	      } catch (SQLException ignore) {
 	      }
 	  }
 }

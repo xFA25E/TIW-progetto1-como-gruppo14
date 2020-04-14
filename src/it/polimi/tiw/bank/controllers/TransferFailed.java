@@ -93,7 +93,7 @@ public class TransferFailed extends HttpServlet {
 
                 ctx.setVariable("destinationAccountId", destinationAccountId);
                 ctx.setVariable("destinationCustomerId", destinationCustomerId);
-                
+
                 ctx.setVariable("transferAmountEuros", amount / 100);
                 ctx.setVariable("transferAmountCents", String.format("%02d", amount % 100));
 
@@ -108,7 +108,7 @@ public class TransferFailed extends HttpServlet {
                 throw new ServletException("Can't find account");
             }
         } else {
-            response.sendRedirect("/Bank/login");
+            response.sendRedirect("/login");
         }
 		} finally {
 			destroy();
@@ -126,9 +126,9 @@ public class TransferFailed extends HttpServlet {
 	public void destroy() {
 	    // Close the connection
 	    if (connection != null)
-	      try { 
-	    	  connection.close(); 
-	      } catch (SQLException ignore) { 	  
+	      try {
+	    	  connection.close();
+	      } catch (SQLException ignore) {
 	      }
 	  }
 }
