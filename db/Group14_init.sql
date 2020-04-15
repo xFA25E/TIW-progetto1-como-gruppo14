@@ -67,15 +67,15 @@ CREATE TRIGGER delete_customer
   AFTER DELETE ON customer
   FOR EACH ROW
     DELETE FROM transfer
-    WHERE source_account_id IS NULL
-    AND destination_account_id IS NULL;
+     WHERE source_account_id IS NULL
+       AND destination_account_id IS NULL;
 
 CREATE TRIGGER delete_account
   AFTER DELETE ON account
   FOR EACH ROW
     DELETE FROM transfer
-    WHERE source_account_id IS NULL
-    AND destination_account_id IS NULL;
+     WHERE source_account_id IS NULL
+       AND destination_account_id IS NULL;
 
 INSERT INTO `account` VALUES (111,41,1000000),(121,41,500000),(131,51,5000000),(141,61,2500000),(151,71,7500000),(161,71,2500000);
 
