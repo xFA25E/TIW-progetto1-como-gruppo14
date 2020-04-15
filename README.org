@@ -14,15 +14,26 @@
 
 * Additional Informations
   At [[https://tiw-progetto1-group14.herokuapp.com/admin]] is possible to: *create*
-  and *delete* users, *create* and *delete* bank accounts and *change* the
+  and *delete* /users/, *create* and *delete* /bank/ accounts and *change* the
   /deposited amount/ of an account.
 
 * Existing Users
-  Is also possbile to test app using this access credentials:
+  Is also possbile to test app using this access credentials and these data for transfers:
 
-  | user             | pass             |
-  |------------------+------------------|
-  | gregory_melendez | gregory_melendez |
-  | weston_rasmussen | weston_rasmussen |
-  | neva_kidd        | neva_kidd        |
-  | marcus_shannon   | marcus_shannon   |
+  | user             | pass             | id utente |
+  |------------------+------------------+-----------|
+  | gregory_melendez | gregory_melendez |        41 |
+  | weston_rasmussen | weston_rasmussen |        71 |
+  | neva_kidd        | neva_kidd        |        61 |
+  | marcus_shannon   | marcus_shannon   |        51 |
+
+* Existing bank accounts
+
+  | id utente | id bank account |
+  |-----------+-----------------|
+  |        41 |             111 |
+  |        41 |             121 |
+  |        51 |             131 |
+  |        61 |             141 |
+  |        71 |             151 |
+  |        71 |             161 |
