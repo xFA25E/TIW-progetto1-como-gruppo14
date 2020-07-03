@@ -37,3 +37,20 @@
   |        61 |             141 |
   |        71 |             151 |
   |        71 |             161 |
+
+* Da fare
+** Modificare il database
+** Modificare i diagrammi
+*** Entita relazione
+** Rifare la pagina login
+*** Aggiungere form di registrazione
+*** Login e register servlet
+    Ci sara un servlet =/login=, dal *GET* ritornerà la pagina di login con
+    entrambi i form.  =/login= nel *POST* accetterà il login e farà il redirect
+    a =/account=.  *POST* nel =/register= (non accetterà il *GET*) registrerà
+    l'utente e farà un redirect a =/account=.
+** Rifare la pagina conti bancari
+*** Account servlet
+    Ci si entra nell'=/account= dal *GET*.  =/account= nel *POST* accettera le
+    trasferte del denaro.  Per aggiungere contatto in rubrica bisognerà inviare
+    *POST* nel =/add-contact= (blocca il *GET*).
