@@ -1,61 +1,134 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Customer</title>
-        <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
-    </head>
 
-    <body>
-        <div id="header">
-            <div id="menu">
-                <a href="#"><img alt="Home" src="/assets/images/home-solid.svg"></a>
-            </div>
-            <div><h2><span th:text="${fullName}">Alessio Spagnolo</span></h2></div>
-            <div>
-                <form action="/forget" method="post">
-                    <input type="submit" value="Log Out">
-                </form>
-            </div>
+<head>
+    <title>Customer</title>
+    <link rel="stylesheet" href="./../../assets/css/styles.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="header">
+        <div>
+            <h2><span th:text="${fullName}">Alessio Spagnolo</span></h2>
         </div>
-
-        <div id="accounts">
-            <table>
-
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Conto</th>
-                        <th>Saldo</th>
-                        <th>Ultima modifica</th>
-                    </tr>
-                </thead>
-
-                <tbody th:remove="all-but-first" th:each="account : ${accounts}">
-
-                    <tr onclick="window.location='account';"
-
-                        th:attr="onclick=|window.location=&apos;account?account-id=| + ${account.accountId} + |&apos;|">
-
-                        <td><img src="/assets/images/bank-card-back-side.png"></td>
-                        <td><span th:text="${account.accountId}">2020</span></td>
-                        <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
-                        <td><span th:text="${account.lastEdit}">20/20/20</span></td>
-                    </tr>
-                    <tr onclick="window.location='account';">
-                        <td><img src="/assets/images/bank-card-back-side.png"></td>
-                        <td>2020</td>
-                        <td>&euro;23423,00</td>
-                        <td>20/20/20</td>
-                    </tr>
-                    <tr onclick="window.location='account';">
-                        <td><img src="/assets/images/bank-card-back-side.png"></td>
-                        <td>2020</td>
-                        <td>&euro;23423,00</td>
-                        <td>20/20/20</td>
-                    </tr>
-                </tbody>
-
-            </table>
+        <div>
+            <form action="/forget" method="post">
+                <input type="submit" value="Log Out">
+            </form>
         </div>
-    </body>
+    </div>
+
+    <div id="payment">
+        <div id="payment-background">
+            <form id="payment-form" action="/create-transfer" method="POST">
+                <fieldset>
+                    <legend onclick="showAnimation();">Effettua un bonifico</legend>
+
+                    <div id="form">
+                        <div id="div-source-id">
+                            <label for="source-account">
+                                Conto sorgente
+                            </label>
+                            <select name="source-account">
+                                <option value="100">100</option>
+                                <option value="101">101</option>
+                                <option value="102">102</option>
+                                <option value="103">103</option>
+                            </select>
+                        </div>
+
+                        <div id="div-destionation-information">
+                            <div>
+                                <h2> Dati destinatario</h2>
+                                <button type="button">
+                                    Scegli da rubrica
+                                </button>
+                            </div>
+
+                            <div>
+                                <label for="destination-customer">
+                                    Codice Destinatario
+                                </label>
+                                <input name="destination-customer" type="number" placeholder=" 112" required>
+                            </div>
+
+                            <!-- <input name="source-account" type="hidden" th:attr="value=${accountId}"> -->
+                            <div>
+                                <label for="destination-account">
+                                    Conto Destinatario
+                                </label>
+                                <input name="destination-account" type="number" placeholder=" 112" required>
+                            </div>
+
+                            <div>
+                                <label for="amount">Importo</label>
+                                <span>
+                                    <span>&euro;</span>
+                                    <input name="amount" type="text" placeholder=" 123,00"
+                                        pattern="(0|[1-9][0-9]*),[0-9]{2}" required>
+                                </span>
+                            </div>
+
+                            <div id="div-textarea">
+                                <label for="cause">Causale</label>
+                                <textarea rows="7" id="textarea" name="cause" maxlength="255"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="div-submit"><input id="submit" type="submit" value="Invia" title="SABBAMIT"></div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div id="accounts">
+        <table>
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Conto</th>
+                    <th>Saldo</th>
+                    <th>Ultima modifica</th>
+                </tr>
+            </thead>
+
+            <tbody th:remove="all-but-first" th:each="account : ${accounts}">
+
+                <tr onclick="window.location='account';"
+                    th:attr="onclick=|window.location=&apos;account?account-id=| + ${account.accountId} + |&apos;|">
+
+                    <td><img src="./../../assets/images/bank-card-back-side.png"></td>
+                    <td><span th:text="${account.accountId}">2020</span></td>
+                    <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
+                    <td><span th:text="${account.lastEdit}">20/20/20</span></td>
+                </tr>
+                <tr onclick="window.location='account';">
+                    <td><img src="./../..//assets/images/bank-card-back-side.png"></td>
+                    <td>2020</td>
+                    <td>&euro;23423,00</td>
+                    <td>20/20/20</td>
+                </tr>
+                <tr onclick="window.location='account';">
+                    <td><img src="./../..//assets/images/bank-card-back-side.png"></td>
+                    <td>2020</td>
+                    <td>&euro;23423,00</td>
+                    <td>20/20/20</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</body>
+
 </html>
+<script>
+    function showAnimation() {
+        if ($("#form").is(":hidden")) {
+            $("#form").slideDown("slow");
+        } else {
+            $("#form").slideUp("slow");
+        }
+    }
+</script>

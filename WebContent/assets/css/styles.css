@@ -125,31 +125,46 @@ body {
 }
 
 #payment-background {
-    background-image: url("/assets/images/electronic-payments.jpg");
+    /* background-image: url("/assets/images/electronic-payments.jpg"); */
+    /* background-color: white; */
     background-size: cover;
+    margin: auto;
     height: 100%;
     width: 100%;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
 #payment form {
-    width: 500px;
+    /* width: 500px; */
+    width: 60%;
     margin: auto;
     background-color: rgba(255, 255, 255, 0.8);
-    padding-top: 20px;
-    padding-left: 20px;
+    padding: 5px;
+    margin-top: 30px;
 }
 
-#payment form div {
+#form #div-destionation-information {
+    border: solid 1px ;
+    margin: 5px;
+}
+
+#form #div-destionation-information div,
+#form #div-source-id,
+#form #div-submit {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 22px;
 }
 
+#payment form #div-submit {
+    flex-direction: row-reverse;
+}
+
 #payment form fieldset {
+    padding: 0px;
     border: 0;
 }
 
@@ -166,39 +181,45 @@ body {
     font-size: 1.2em;
 }
 
-#payment form div:last-child {
-    flex-direction: row-reverse;
-}
-
-#payment form div:nth-child(6) {
+#payment form #div-textarea {
     align-items: flex-start;
     flex-direction: column;
 }
 
-#payment form div:nth-child(6) textarea {
+#payment form #textarea {
     width: 100%;
     margin-top: 30px;
 }
 
+#payment form #source-id{
+    display: block ;
+    border-bottom: 1px solid black;
+    padding-bottom: 22px;
+}
+
+#payment form div select,
 #payment form div input[type=text],
 #payment form div input[type=number] {
     height: 30px;
 }
 
+#payment form div select,
 #payment form div input,
-#payment form div:nth-child(6) textarea {
+#payment form div button,
+#payment form div:nth-child(7) textarea {
     font-size: 1.2em;
     border: 2px solid black;
     border-radius: 3px;
 }
 
-#payment form div input[type=submit] {
+#payment form div input[type=submit],
+#payment form div button {
     background-color: #d9e0e2;
     border: none;
     padding: 12px 30px;
     text-decoration: none;
     cursor: pointer;
-    align-self: flex-end;
+    /* align-self: flex-end; */
 }
 
 /* Chrome, Safari, Edge, Opera */
