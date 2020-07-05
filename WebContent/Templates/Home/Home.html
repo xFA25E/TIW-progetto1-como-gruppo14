@@ -21,11 +21,15 @@
 
     <div id="payment">
         <div id="payment-background">
-            <form id="payment-form" action="/create-transfer" method="POST">
+            <form action="/create-transfer" method="POST">
                 <fieldset>
-                    <legend onclick="showAnimation();">Effettua un bonifico</legend>
 
-                    <div id="form">
+                    <div id="div-header" onclick="showAnimation();">
+                        <h2>Effettua un bonifico</h2>
+                        <img id="img-form-header" src="arrow-down-24.png" style="width: 24px;height: 24px;";/>
+                    </div>
+
+                    <div id="div-form">
                         <div id="div-source-id">
                             <label for="source-account">
                                 Conto sorgente
@@ -38,7 +42,7 @@
                             </select>
                         </div>
 
-                        <div id="div-destionation-information">
+                        <div id="div-destination-information">
                             <div>
                                 <h2> Dati destinatario</h2>
                                 <button type="button">
@@ -125,10 +129,12 @@
 </html>
 <script>
     function showAnimation() {
-        if ($("#form").is(":hidden")) {
-            $("#form").slideDown("slow");
+        if ($("#div-form").is(":hidden")) {
+            $("#div-form").slideDown("slow");
+            $("#img-form-header").attr("src","arrow-up-24.png")
         } else {
-            $("#form").slideUp("slow");
+            $("#div-form").slideUp("slow");
+            $("#img-form-header").attr("src","arrow-down-24.png")
         }
     }
 </script>
