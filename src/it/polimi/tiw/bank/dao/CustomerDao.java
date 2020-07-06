@@ -15,20 +15,20 @@ public class CustomerDao {
         this.connection = connection;
     }
 
-    public Customer findCustomerByUserName(String userName) throws SQLException {
+    public Customer findCustomerByEmail(String eMail) throws SQLException {
         Customer customer = null;
-        String query = "SELECT * FROM customer WHERE user_name = ?";
+        String query = "SELECT * FROM customer WHERE email = ?";
         ResultSet result = null;
         PreparedStatement pstatement = null;
         try {
             pstatement = connection.prepareStatement(query);
-            pstatement.setString(1, userName);
+            pstatement.setString(1, eMail);
             result = pstatement.executeQuery();
             while (result.next()) {
                 customer = new Customer();
                 customer.setCustomerId(result.getLong("customer_id"));
                 customer.setFullName(result.getString("full_name"));
-                customer.setUserName(result.getString("user_name"));
+                customer.setEmail(result.getString("email"));
                 customer.setPasswordHash(result.getString("password_hash"));
                 customer.setPasswordSalt(result.getString("password_salt"));
             }
@@ -63,7 +63,7 @@ public class CustomerDao {
                 customer = new Customer();
                 customer.setCustomerId(result.getInt("customer_id"));
                 customer.setFullName(result.getString("full_name"));
-                customer.setUserName(result.getString("user_name"));
+                customer.setEmail(result.getString("email"));
                 customer.setPasswordHash(result.getString("password_hash"));
                 customer.setPasswordSalt(result.getString("password_salt"));
             }
@@ -86,12 +86,12 @@ public class CustomerDao {
     }
 
     public long createCustomer(String fullName,
-                               String userName,
+                               String eMail,
                                String passwordHash,
                                String passwordSalt)
         throws SQLException {
         String query = ("INSERT INTO customer (full_name,"
-                        + "                    user_name,"
+                        + "                    email,"
                         + "                    password_hash,"
                         + "                    password_salt)"
                         + "VALUES (?, ?, ?, ?)");
@@ -100,7 +100,7 @@ public class CustomerDao {
         try {
             pstatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pstatement.setString(1, fullName);
-            pstatement.setString(2, userName);
+            pstatement.setString(2, eMail);
             pstatement.setString(3, passwordHash);
             pstatement.setString(4, passwordSalt);
             int affectedRows = pstatement.executeUpdate();
@@ -127,13 +127,13 @@ public class CustomerDao {
         }
     }
 
-    public void deleteCustomerByUserName(String userName) throws SQLException {
-        String query = "DELETE FROM customer WHERE user_name = ?";
+    public void deleteCustomerByEmail(String eMail) throws SQLException {
+        String query = "DELETE FROM customer WHERE email = ?";
 
         PreparedStatement pstatement = null;
         try {
             pstatement = connection.prepareStatement(query);
-            pstatement.setString(1, userName);
+            pstatement.setString(1, eMail);
             pstatement.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e);

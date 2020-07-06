@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,26 +21,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class Authenticate
+ * Servlet implementation class Register
  */
-@WebServlet("/Authenticate")
+@WebServlet("/Register")
 @MultipartConfig
-public class Authenticate extends HttpServlet {
+public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Authenticate() {
+	public Register() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public void init() throws ServletException {
-
-	}
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -48,15 +45,26 @@ public class Authenticate extends HttpServlet {
 			throws ServletException, IOException {
 		try {
             // Extract parameters
+            String fullName = request.getParameter("full-name");
             String eMail = request.getParameter("email");
             String password = request.getParameter("password");
-
+            System.out.printf("%s, %s, %s\n", fullName, eMail, password);
+            
+            for (Map.Entry<String, String[]> e : request.getParameterMap().entrySet()) {
+            	System.out.println(e.getKey() + " => " + e.getValue());
+            }
+            
             // If parameters are not valid, send error
-            if (eMail == null || eMail.isEmpty() || password == null || password.isEmpty()) {
+            if (eMail == null || eMail.isEmpty()
+                || password == null || password.isEmpty()
+                || fullName == null || fullName.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("Credentials must not be null");
                 return;
             }
+
+            String salt = PasswordManager.generateSalt();
+            String hash = PasswordManager.hashPassword(password, salt);
 
             // Establish db connection
 			try {
@@ -73,31 +81,19 @@ public class Authenticate extends HttpServlet {
 				throw new UnavailableException("Couldn't get db connection");
 			}
 
-            Customer customer;
             // Query database for customer user
+			long customerId;
             try {
-                customer = new CustomerDao(connection).findCustomerByEmail(eMail);
+                customerId = new CustomerDao(connection).createCustomer(fullName, eMail, hash, salt);
             } catch (SQLException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later");
                 return;
             }
 
-            if (customer == null) { // If user was not found
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().println("Incorrect credentials");
-            } else {
-                String hash = customer.getPasswordHash();
-                String salt = customer.getPasswordSalt();
-
-                if (PasswordManager.verifyPassword(password, hash, salt)) {
-                    request.getSession().setAttribute("CUSTOMERID", customer.getCustomerId());
-                    response.setStatus(HttpServletResponse.SC_OK);
-                } else {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().println("Incorrect credentials");
-                }
-            }
+            // Success, send session and e-mail
+            request.getSession().setAttribute("CUSTOMERID", customerId);
+            response.setStatus(HttpServletResponse.SC_OK);
         } finally {
 			destroy();
 		}
@@ -105,10 +101,10 @@ public class Authenticate extends HttpServlet {
 
 	public void destroy() {
 		// Close the connection
-		if (connection != null)
-			try {
-				connection.close();
-			} catch (SQLException ignore) {
-			}
+		if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException ignore) {}
+        }
 	}
 }

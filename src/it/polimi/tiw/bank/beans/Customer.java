@@ -3,7 +3,7 @@ package it.polimi.tiw.bank.beans;
 public class Customer {
     private long customerId;
     private String fullName;
-    private String userName;
+    private String eMail;
     private String passwordHash;
     private String passwordSalt;
 
@@ -15,8 +15,8 @@ public class Customer {
         return fullName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return eMail;
     }
 
     public String getPasswordHash() {
@@ -35,8 +35,8 @@ public class Customer {
         this.fullName = fullName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setEmail(String eMail) {
+        this.eMail = eMail;
     }
 
     public void setPasswordHash(String passwordHash) {

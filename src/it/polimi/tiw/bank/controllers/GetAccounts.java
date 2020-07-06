@@ -86,7 +86,7 @@ public class GetAccounts extends HttpServlet {
 
 					if (customer == null) {
 						session.invalidate();
-						response.sendRedirect("/login");
+						response.sendRedirect("./login");
 					} else {
 						String path = "/Templates/Home/Home.html";
 						ServletContext servletContext = getServletContext();
@@ -98,10 +98,10 @@ public class GetAccounts extends HttpServlet {
 					}
 				} catch (SQLException e) {
 					session.invalidate();
-					response.sendRedirect("/login");
+					response.sendRedirect("./login");
 				}
 			} else {
-				response.sendRedirect("/login");
+				response.sendRedirect("./login");
 			}
 		} finally {
 			destroy();
