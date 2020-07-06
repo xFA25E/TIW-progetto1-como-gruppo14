@@ -128,7 +128,7 @@ h2 {
 
 /* payment region */
 #payment {
-    padding: 5px;
+    margin-top: 50px;
 }
 
 #payment-background {
@@ -162,11 +162,10 @@ h2 {
 }
 
 #payment form {
-    padding: 5px;
     margin-top: 30px;
 }
 
-#div-form #div-destination-information {
+#div-destination-information {
     border: solid 1px ;
     margin: 5px;
 }
