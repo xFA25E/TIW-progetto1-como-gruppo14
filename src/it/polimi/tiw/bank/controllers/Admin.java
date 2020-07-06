@@ -47,19 +47,19 @@ public class Admin extends HttpServlet {
 				+ "            <fieldset>\n" + "                <legend>Create Customer</legend>\n"
 				+ "                <input type='hidden' name='action' value='create'>\n"
 				+ "                Full Name<br>\n"
-				+ "                <input name='full-name' type='text' value=''><br>\n" + "                User<br>\n"
+				+ "                <input name='full-name' type='text' value=''><br>\n" + "                Email<br>\n"
 				+ "                <input name='user-name' type='text' value=''><br>\n" + "                Pass<br>\n"
 				+ "                <input name='password' type='text' value=''><br>\n"
 				+ "                <input type='submit' value='Create'>\n" + "            </fieldset>\n"
 				+ "        </form>\n" + "\n" + "        <form method='POST'>\n" + "            <fieldset>\n"
 				+ "                <legend>Delete Customer</legend>\n"
-				+ "                <input type='hidden' name='action' value='delete'>\n" + "                User<br>\n"
+				+ "                <input type='hidden' name='action' value='delete'>\n" + "                Email<br>\n"
 				+ "                <input name='user-name' type='text' value=''><br>\n"
 				+ "                <input type='submit' value='Delete'>\n" + "            </fieldset>\n"
 				+ "        </form>\n" + "\n" + "        <br><br>\n" + "\n" + "        <form method='POST'>\n"
 				+ "            <fieldset>\n" + "                <legend>Create Account</legend>\n"
 				+ "                <input type='hidden' name='action' value='create-account'>\n"
-				+ "                User<br>\n" + "                <input name='user-name' type='text' value=''><br>\n"
+				+ "                Email<br>\n" + "                <input name='user-name' type='text' value=''><br>\n"
 				+ "                Amount<br>\n" + "                <input name='amount' type='text' value=''><br>\n"
 				+ "                <input type='submit' value='Create'>\n" + "            </fieldset>\n"
 				+ "        </form>\n" + "\n" + "        <form method='POST'>\n" + "            <fieldset>\n"
@@ -83,7 +83,7 @@ public class Admin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			
+
 			try {
 				ServletContext context = getServletContext();
 				String driver = context.getInitParameter("dbDriver");
@@ -113,6 +113,8 @@ public class Admin extends HttpServlet {
 				try {
 					customerDao.createCustomer(fullName, userName, hash, salt);
 				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 			}
 
@@ -122,7 +124,7 @@ public class Admin extends HttpServlet {
 				CustomerDao customerDao = new CustomerDao(connection);
 
 				try {
-					customerDao.deleteCustomerByUserName(userName);
+					customerDao.deleteCustomerByEmail(userName);
 				} catch (SQLException e) {
 				}
 			}

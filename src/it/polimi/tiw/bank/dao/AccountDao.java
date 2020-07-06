@@ -159,7 +159,7 @@ public class AccountDao {
         		"INSERT INTO account (customer_id, deposited_amount)\n" +
         		"VALUES ((SELECT customer_id\n" +
         		"           FROM customer\n" +
-        		"          WHERE user_name = ?), ?)";
+        		"          WHERE email = ?), ?)";
 
         PreparedStatement pstatement = null;
         try {

@@ -7,17 +7,17 @@
 
     <context-param>
 		<param-name>dbUrl</param-name>
-		<param-value>jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_fbd6ce354f06502?reconnect=true</param-value>
+		<param-value>jdbc:mysql://localhost:3306/dbtest</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>dbUser</param-name>
-		<param-value>b702d301000bee</param-value>
+		<param-value>val</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>dbPassword</param-name>
-		<param-value>8475d141</param-value>
+		<param-value>val</param-value>
 	</context-param>
 
 	<context-param>
@@ -33,6 +33,15 @@
         <servlet-name>Login</servlet-name>
         <url-pattern></url-pattern>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Registration</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.Registration</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Registration</servlet-name>
+        <url-pattern>/registration</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -60,6 +69,15 @@
     <servlet-mapping>
         <servlet-name>Authenticate</servlet-name>
         <url-pattern>/authenticate</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>Register</servlet-name>
+      <servlet-class>it.polimi.tiw.bank.controllers.Register</servlet-class>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>Register</servlet-name>
+      <url-pattern>/register</url-pattern>
     </servlet-mapping>
 
     <servlet>

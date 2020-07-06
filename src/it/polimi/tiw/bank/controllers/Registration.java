@@ -16,17 +16,17 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Registration
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@WebServlet("/Registration")
+public class Registration extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
-
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Registration() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,22 +39,19 @@ public class Login extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 	}
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-        throws ServletException, IOException {
-
+    
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null) {
-        	String path = "/Templates/Login/Login.html";
+        	String path = "/Templates/Login/Register.html";
         	ServletContext servletContext = getServletContext();
         	final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         	templateEngine.process(path, ctx, response.getWriter());
         } else {
             response.sendRedirect("./home");
         }
-    }
+	}
 }
