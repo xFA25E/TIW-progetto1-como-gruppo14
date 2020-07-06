@@ -5,6 +5,7 @@
     <title>Customer</title>
     <link rel="stylesheet" href="./../../assets/css/styles.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="bank.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
             <form action="/create-transfer" method="POST">
                 <fieldset>
 
-                    <div id="div-header" onclick="showAnimation();">
+                    <div id="div-header">
                         <h2>Effettua un bonifico</h2>
                         <img id="img-form-header" src="arrow-down-24.png" style="width: 24px;height: 24px;";/>
                     </div>
@@ -127,14 +128,3 @@
 </body>
 
 </html>
-<script>
-    function showAnimation() {
-        if ($("#div-form").is(":hidden")) {
-            $("#div-form").slideDown("slow");
-            $("#img-form-header").attr("src","arrow-up-24.png")
-        } else {
-            $("#div-form").slideUp("slow");
-            $("#img-form-header").attr("src","arrow-down-24.png")
-        }
-    }
-</script>
