@@ -48,12 +48,7 @@ public class Register extends HttpServlet {
             String fullName = request.getParameter("full-name");
             String eMail = request.getParameter("email");
             String password = request.getParameter("password");
-            System.out.printf("%s, %s, %s\n", fullName, eMail, password);
-            
-            for (Map.Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-            	System.out.println(e.getKey() + " => " + e.getValue());
-            }
-            
+  
             // If parameters are not valid, send error
             if (eMail == null || eMail.isEmpty()
                 || password == null || password.isEmpty()
