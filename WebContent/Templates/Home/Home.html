@@ -27,7 +27,7 @@
 
                     <div id="div-header">
                         <h2>Effettua un bonifico</h2>
-                        <img id="img-form-header" src="arrow-down-24.png" style="width: 24px;height: 24px;";/>
+                        <img id="img-form-header" src="arrow-down-24.png" style="width: 24px;height: 24px;" ; />
                     </div>
 
                     <div id="div-form">
@@ -46,7 +46,7 @@
                         <div id="div-destination-information">
                             <div>
                                 <h2> Dati destinatario</h2>
-                                <button type="button">
+                                <button id="btn-address-book" type="button">
                                     Scegli da rubrica
                                 </button>
                             </div>
@@ -87,7 +87,37 @@
             </form>
         </div>
     </div>
+
+    <div id="modal">
+        <div id="modal-content-customer-selector-popup">
+            <input id="search-filter" type="text" placeholder="Cerca per nome e cognome">
+            <table id="customers">
+                <tr>
+                    <th>Nome e Cognome</th>
+                    <th>Codice utente</th>
+                    <th>Codice conto</th>
+                </tr>
+                <tr>
+                    <td>Alessio Spagnolo</td>
+                    <td>100</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>Alessio Spagnolo</td>
+                    <td>100</td>
+                    <td>101</td>
+                </tr>
+                <tr>
+                    <td>Alessio Spagnolo</td>
+                    <td>100</td>
+                    <td>102</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <div id="accounts">
+
         <table>
 
             <thead>
@@ -101,7 +131,7 @@
 
             <tbody th:remove="all-but-first" th:each="account : ${accounts}">
 
-                <tr onclick="window.location='account';"
+                <tr class="tr-account"
                     th:attr="onclick=|window.location=&apos;account?account-id=| + ${account.accountId} + |&apos;|">
 
                     <td><img src="./../../assets/images/bank-card-back-side.png"></td>
@@ -109,17 +139,164 @@
                     <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
                     <td><span th:text="${account.lastEdit}">20/20/20</span></td>
                 </tr>
-                <tr onclick="window.location='account';">
+                <tr class="tr-transfers">
+                    <td colspan="4">
+                        <div id="transfers-body">
+                            <table th:remove="all-but-first" th:each="transfer : ${transfers}">
+                                <tr th:class="(${transfer.sourceAccountId} == ${accountId})? 'export' : 'import '"
+                                    class="import">
+                                    <td>
+                                        <img th:attr="src=|./../../assets//images/| + ((${transfer.sourceAccountId} == ${accountId})? 'upload.png' : 'download.png')"
+                                            alt="download" width="32" height="32">
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            Conto
+                                            <span
+                                                th:text="(${transfer.sourceAccountId} == ${accountId})? (${transfer.destinationAccountId}) : (${transfer.sourceAccountId})">
+                                                2020
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span
+                                                th:text="(((${transfer.sourceAccountId} == ${accountId})? '-' : '+') + ${transfer.euros} + |,| + ${transfer.cents})">
+                                                +300,00
+                                            </span>
+                                            &euro;
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <em><span th:text="${transfer.creationDate}">01/01/2020</span></em>
+                                    </td>
+                                    <td th:title="${transfer.cause}" title="la mia bella causa">
+                                        <img src="./../../assets//images/icons8-help-64.png" height="32" width="32">
+                                    </td>
+                                </tr>
+                                <tr class="export">
+                                    <td>
+                                        <img src="./../../assets//images/upload.png" alt="download" width="32" height="32">
+                                    </td>
+                                    <td><strong>Giovanni (2020)</strong></td>
+                                    <td><strong>&euro; -300,00</strong></td>
+                                    <td><em>01/01/2020</em></td>
+                                    <td title="la mia bella causa">
+                                        <img src="./../../assets//images/icons8-help-64.png" height="32" width="32">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="tr-account">
+                    <td><img src="./../../assets/images/bank-card-back-side.png"></td>
+                    <td>2020</td>
+                    <td>&euro;23423,00</td>
+                    <td>20/20/20</td>
+                </tr>
+                <tr class="tr-transfers">
+                    <td colspan="4">
+                        <div id="transfers-body">
+                            <table th:remove="all-but-first" th:each="transfer : ${transfers}">
+                                <tr th:class="(${transfer.sourceAccountId} == ${accountId})? 'export' : 'import '"
+                                    class="import">
+                                    <td>
+                                        <img th:attr="src=|./../../assets//images/| + ((${transfer.sourceAccountId} == ${accountId})? 'upload.png' : 'download.png')"
+                                            alt="download" width="32" height="32">
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            Conto
+                                            <span
+                                                th:text="(${transfer.sourceAccountId} == ${accountId})? (${transfer.destinationAccountId}) : (${transfer.sourceAccountId})">
+                                                2020
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span
+                                                th:text="(((${transfer.sourceAccountId} == ${accountId})? '-' : '+') + ${transfer.euros} + |,| + ${transfer.cents})">
+                                                +300,00
+                                            </span>
+                                            &euro;
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <em><span th:text="${transfer.creationDate}">01/01/2020</span></em>
+                                    </td>
+                                    <td th:title="${transfer.cause}" title="la mia bella causa">
+                                        <img src="./../../assets//images/icons8-help-64.png" height="32" width="32">
+                                    </td>
+                                </tr>
+                                <tr class="export">
+                                    <td>
+                                        <img src="./../../assets//images/upload.png" alt="download" width="32" height="32">
+                                    </td>
+                                    <td><strong>Giovanni (2020)</strong></td>
+                                    <td><strong>&euro; -300,00</strong></td>
+                                    <td><em>01/01/2020</em></td>
+                                    <td title="la mia bella causa">
+                                        <img src="./../../assets//images/icons8-help-64.png" height="32" width="32">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="tr-account">
                     <td><img src="./../..//assets/images/bank-card-back-side.png"></td>
                     <td>2020</td>
                     <td>&euro;23423,00</td>
                     <td>20/20/20</td>
                 </tr>
-                <tr onclick="window.location='account';">
-                    <td><img src="./../..//assets/images/bank-card-back-side.png"></td>
-                    <td>2020</td>
-                    <td>&euro;23423,00</td>
-                    <td>20/20/20</td>
+                <tr class="tr-transfers">
+                    <td colspan="4">
+                        <div id="transfers-body">
+                            <table th:remove="all-but-first" th:each="transfer : ${transfers}">
+                                <tr th:class="(${transfer.sourceAccountId} == ${accountId})? 'export' : 'import '"
+                                    class="import">
+                                    <td>
+                                        <img th:attr="src=|./../../assets//images/| + ((${transfer.sourceAccountId} == ${accountId})? 'upload.png' : 'download.png')"
+                                            alt="download" width="32" height="32">
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            Conto
+                                            <span
+                                                th:text="(${transfer.sourceAccountId} == ${accountId})? (${transfer.destinationAccountId}) : (${transfer.sourceAccountId})">
+                                                2020
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span
+                                                th:text="(((${transfer.sourceAccountId} == ${accountId})? '-' : '+') + ${transfer.euros} + |,| + ${transfer.cents})">
+                                                +300,00
+                                            </span>
+                                            &euro;
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <em><span th:text="${transfer.creationDate}">01/01/2020</span></em>
+                                    </td>
+                                    <td th:title="${transfer.cause}" title="la mia bella causa">
+                                        <img src="./../../assets//images/icons8-help-64.png" height="32" width="32">
+                                    </td>
+                                </tr>
+                                <tr class="export">
+                                    <td>
+                                        <img src="./../../assets//images/upload.png" alt="download" width="32" height="32">
+                                    </td>
+                                    <td><strong>Giovanni (2020)</strong></td>
+                                    <td><strong>&euro; -300,00</strong></td>
+                                    <td><em>01/01/2020</em></td>
+                                    <td title="la mia bella causa">
+                                        <img src="./../../assets//images/icons8-help-64.png" height="32" width="32">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
 
