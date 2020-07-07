@@ -46,7 +46,7 @@
 
     <servlet>
         <servlet-name>Home</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.GetAccounts</servlet-class>
+        <servlet-class>it.polimi.tiw.bank.controllers.HomePage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
@@ -54,12 +54,21 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Account</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.GetAccountPage</servlet-class>
+        <servlet-name>GetTransfers</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.GetTransfers</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Account</servlet-name>
-        <url-pattern>/account</url-pattern>
+        <servlet-name>GetTransfers</servlet-name>
+        <url-pattern>/get-transfers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetContacts</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.GetContacts</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetContacts</servlet-name>
+        <url-pattern>/get-contacts</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -90,21 +99,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>TransferSuccessful</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.TransferSuccessful</servlet-class>
+        <servlet-name>AddContact</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.AddContact</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TransferSuccessful</servlet-name>
-        <url-pattern>/transfer-successful</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>TransferFailed</servlet-name>
-        <servlet-class>it.polimi.tiw.bank.controllers.TransferFailed</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TransferFailed</servlet-name>
-        <url-pattern>/transfer-failed</url-pattern>
+        <servlet-name>AddContact</servlet-name>
+        <url-pattern>/add-contact</url-pattern>
     </servlet-mapping>
 
     <servlet>

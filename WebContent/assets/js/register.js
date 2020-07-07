@@ -4,8 +4,14 @@
 
     function processForm(e) {
         if (e.preventDefault) e.preventDefault();
-        for (let p of new FormData(this)) { console.log(p); }
+
         if (this.checkValidity()) {
+            let form = new FormData(this);
+            if (form.get("password") !== form.get("password-repeat")) {
+                document.getElementById("error-message").textContent = "Passwords should be equal";
+                return false;
+            }
+
             makeCall(
                 "POST", './register', this,
                 function(req) {
