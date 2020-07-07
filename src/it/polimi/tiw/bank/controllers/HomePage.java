@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -74,14 +75,21 @@ public class HomePage extends HttpServlet {
         }
 
         Customer customer;
-        List<Account> accountList;
+        List<Account> accountList = new ArrayList<>(); 
         long customerId = (Long) session.getAttribute("CUSTOMERID");
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            accountList = new AccountDao(connection).findAllByCustomerId(customerId);
+            customer = new CustomerDao(connection).findCustomerById(customerId);
+            if (customer == null) {
+            	session.invalidate();
+            	response.sendRedirect("./login");
+            	return;
+            }
+        	accountList = new AccountDao(connection).findAllByCustomerId(customerId);
         } catch (SQLException e) {
             session.invalidate();
             response.sendRedirect("./login");
+            return;
         }
 
         String path = "/Templates/Home/Home.html";
