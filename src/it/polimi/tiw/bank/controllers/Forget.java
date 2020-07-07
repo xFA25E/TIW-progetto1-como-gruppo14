@@ -34,17 +34,6 @@ public class Forget extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("/home");
+        response.setStatus(HttpServletResponse.SC_OK);
     }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-        throws ServletException, IOException {
-
-        doPost(request, response);
-    }
-
 }

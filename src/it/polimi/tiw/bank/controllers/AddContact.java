@@ -7,6 +7,7 @@ import it.polimi.tiw.bank.beans.Customer;
 import it.polimi.tiw.bank.dao.TransferDao;
 import it.polimi.tiw.bank.dao.AccountDao;
 import it.polimi.tiw.bank.dao.CustomerDao;
+import it.polimi.tiw.bank.dao.ContactsDao;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,27 +30,18 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.context.WebContext;
 
 /**
- * Servlet implementation class CreateTransfer
+ * Servlet implementation class AddContact
  */
-@WebServlet("/CreateTransfer")
-public class CreateTransfer extends HttpServlet {
+@WebServlet("/AddContact")
+public class AddContact extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CreateTransfer() {
+	public AddContact() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 	}
 
 	/**
@@ -58,7 +50,7 @@ public class CreateTransfer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-        // Check session
+
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -66,44 +58,23 @@ public class CreateTransfer extends HttpServlet {
             return;
         }
 
-        // Parameters validation
-        String sourceAccountIdString = request.getParameter("source-account");
-        String destinationCustomerIdString = request.getParameter("destination-customer");
-        String destinationAccountIdString = request.getParameter("destination-account");
-        String amountString = request.getParameter("amount");
-        String cause = request.getParameter("cause");
-
-        if (sourceAccountIdString == null || sourceAccountIdString.isEmpty()
-            || destinationCustomerIdString == null || destinationCustomerIdString.isEmpty()
-            || destinationAccountIdString == null || destinationAccountIdString.isEmpty()
-            || amountString == null || amountString.isEmpty()
-            || cause == null) {
+        String accountIdString = request.getParameter("account-id");
+        if (accountIdString == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Fields cannot be empty");
+            response.getWriter().println("Account Id cannot be null");
             return;
         }
 
-        if (sourceAccountIdString.matches("^[0-9]+$")
-            || destinationCustomerIdString.matches("^[0-9]+$")
-            || destinationAccountIdString.matches("^[0-9]+$")) {
+        if (!accountIdString.matches("^[0-9]+$")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Accounts should be numeric");
+            response.getWriter().println("Account Id is not numeric");
             return;
         }
 
-        if (amountString.matches("(0|[1-9][0-9]*),[0-9]{2}")) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Amount is not correct");
-            return;
-        }
-
-        long sourceAccountId = Long.parseLong(sourceAccountId);
-        long destinationCustomerId = Long.parseLong(destinationCustomerId);
-        long destinationAccountId = Long.parseLong(destinationAccountId);
-        long amount = Long.parseLong(amountString.replace(",", ""));
+        long accountId = Long.parseLong(accountIdString);
         long customerId = (long) session.getAttribute("CUSTOMERID");
 
-        // Db connection
+        // Establish db connection
         ServletContext context = getServletContext();
         String driver = context.getInitParameter("dbDriver");
         String url = context.getInitParameter("dbUrl");
@@ -117,15 +88,13 @@ public class CreateTransfer extends HttpServlet {
         }
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            new TransferDao(connection).createTransfer(sourceAccountId, destinationAccountId,
-                                                       destinationCustomerId, amount, cause);
-            response.setStatus(HttpServletResponse.SC_OK);
+            new ContactsDao(connection).addContactByCustomerId(customerId, accountId);
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Internal server error, retry later");
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println(e.getMessage());
+            return;
         }
+
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }
