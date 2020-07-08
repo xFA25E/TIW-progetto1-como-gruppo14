@@ -330,6 +330,15 @@ input[name=destination-account] {
     margin: 0px;
 }
 
+#transfers-body tr {
+    background-color: white;
+    border-bottom: 1pt solid black;
+}
+
+#transfers-body tr:last-child {
+    border-bottom: none;
+}
+
 #transfers-body {
     /* width: 100%; */
     /* overflow: auto; */
@@ -341,11 +350,11 @@ input[name=destination-account] {
 }
 
 .export {
-    background-color: #d9e0e2;
+    /* background-color: #d9e0e2; */
 }
 
 .import {
-    background-color: white;
+    /* background-color: white; */
 }
 
 #transfers-body table td {
