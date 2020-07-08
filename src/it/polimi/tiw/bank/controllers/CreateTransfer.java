@@ -1,9 +1,6 @@
 package it.polimi.tiw.bank.controllers;
 
 import it.polimi.tiw.bank.dao.TransferDao;
-import it.polimi.tiw.bank.dao.AccountDao;
-
-import it.polimi.tiw.bank.beans.Account;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -104,18 +101,13 @@ public class CreateTransfer extends HttpServlet {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             new TransferDao(connection).createTransfer(sourceAccountId, destinationAccountId,
                                                        destinationCustomerId, amount, cause);
-            Account account = new AccountDao(connection).findAccountByAccountId(sourceAccountId);
-
-            if (account != null) {
-                String json = new Gson().toJson(account);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Internal server error, retry later");
-                return;
-            }
+            
+           long[] ids = {sourceAccountId, destinationAccountId};
+           String json = new Gson().toJson(ids);
+           response.setContentType("application/json");
+           response.setCharacterEncoding("UTF-8");
+           response.getWriter().write(json);
+            
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Internal server error, retry later");

@@ -1,5 +1,4 @@
 "use strict";
-
 (function () {
 
     let accountLoad = {};
@@ -36,7 +35,6 @@
                                 transfersRow.appendChild(transfersToHtml(
                                     accountId, JSON.parse(transfers)
                                 ));
-                                loaded = true;
                             }
                         );
                     }
@@ -46,7 +44,8 @@
 
                     return function () {
                         if (!loaded) {
-                            loadTransfers(this.getAttribute("account-id"));
+                            loadTransfers(accountId);
+                            loaded = true;
                         }
 
 					    if (displayed) {
@@ -342,10 +341,13 @@
                 "POST", './create-transfer', this,
                 function(req) {
                     if (req.readyState == XMLHttpRequest.DONE) {
-                        let account = req.responseText;
+                        let accounts = req.responseText;
                         switch (req.status) {
                         case 200:
-                            console.log(JSON.parse(account));
+                            let ids = JSON.parse(accounts);
+                            for (let i = 0; i < ids.length; i++) {
+                                accountLoad[ids[i]]();
+                            }
                             break;
                         case 400: // bad request
                         case 401: // unauthorized
