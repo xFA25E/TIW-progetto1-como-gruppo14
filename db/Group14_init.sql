@@ -95,8 +95,13 @@ CREATE TABLE contact (
 );
 
 CREATE VIEW contact_information AS
-  SELECT customer_id, account_id, full_name
-    FROM contact JOIN customer USING (customer_id);
+  SELECT t.customer_id AS customer_id,
+         a.customer_id AS contact_customer_id,
+         t.account_id AS contact_account_id,
+         c.full_name AS contact_full_name
+    FROM contact AS t
+           JOIN account AS a ON t.account_id = a.account_id
+           JOIN customer AS c ON a.customer_id = c.customer_id;
 
 
 -- INSERT INTO `customer` VALUES (41,'Gregory Melendez','gregory_melendez','hE4Z5phPsV/wwQmseecDTPztiEc0C43P6E4RiKKjUJE=','c)RAv:5T/KgypDGy6.}\\3Y@b2:6En6'),(51,'Marcus Shannon','marcus_shannon','7S+LsWqMAMzrBU8kF9NvnhV/5GitX2RdIuhB5F1rDCU=','L\\2W%nCVHA$/i6OECmuODe5mx8G|DE'),(61,'Neva Kidd','neva_kidd','QvXIgmfkVXbf6NOGVE9BLhpWIpP+vye1jpDmZvGwtVM=','cY4R<94Sp(junI&B4X.%;(m\\0?8Jy.'),(71,'Weston Rasmussen','weston_rasmussen','i7RM92Cbg7TK3bxPl0jkFyRtMT6zcILHZ7/NDB0xUEE=','dUhB-L>Q~<7aM/[@rD/*9SCCze>*_B');

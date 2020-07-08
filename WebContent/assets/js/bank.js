@@ -14,7 +14,7 @@
 		let transfersRows = document.getElementsByClassName("tr-transfers");
 		for (let i = 0; i < accountRows.length; i++) {
 			accountRows.item(i).addEventListener
-			("click", 
+			("click",
 			function () {
 				let transfers = transfersRows;
 				let displayed = false;
@@ -29,7 +29,7 @@
 				}
 				return display;
 			}())
-			
+
 		}
 		// if (sessionStorage.getItem("username") == null) {
 		// 	window.location.href = "index.html";
@@ -42,10 +42,10 @@
 	function showAnimation() {
 		if ($("#div-form").is(":hidden")) {
 			$("#div-form").slideDown("slow");
-			$("#img-form-header").attr("src", "arrow-up-24.png")
+			$("#img-form-header").attr("src", "./assets/images/arrow-up-24.png")
 		} else {
 			$("#div-form").slideUp("slow");
-			$("#img-form-header").attr("src", "arrow-down-24.png")
+			$("#img-form-header").attr("src", "./assets/images/arrow-down-24.png")
 		}
 	}
 
@@ -101,7 +101,7 @@
 		// Get the <span> element that closes the modal
 		// var span = document.getElementsByClassName("close")[0];
 
-		// When the user clicks the button, open the modal 
+		// When the user clicks the button, open the modal
 		btn.onclick = function () {
 			modal.style.display = "flex";
 		}
@@ -120,3 +120,45 @@
 	}
 })();
 
+function populateContacts(contacts) {
+    console.log(contacts);
+}
+
+function getContacts() {
+    makeCall(
+        "POST", './get-contacts', null,
+        function(req) {
+            if (req.readyState == XMLHttpRequest.DONE) {
+                let contacts = req.responseText;
+                switch (req.status) {
+                case 200:
+                    populateContacts(contacts);
+                    break;
+                default:
+                    console.log("Internal error on get contacts");
+                    cossole.log(contacts);
+                    break;
+                }
+            }
+        }
+    );
+}
+
+function addContact(accountId) {
+    makeCall(
+        "POST", './add-contact', createForm({"account-id": accountId.toString()}),
+        function(req) {
+            if (req.readyState == XMLHttpRequest.DONE) {
+                let message = req.responseText;
+                switch (req.status) {
+                case 200:
+                    break;
+                default:
+                    console.log("Internal error on add contact");
+                    console.log(message);
+                    break;
+                }
+            }
+        }
+    );
+}

@@ -17,3 +17,18 @@ function makeCall(method, url, formElement, cback, reset = true) {
 	    formElement.reset();
 	}
 }
+
+function createInput(name, value) {
+    let input = document.createElement("input");
+    input.name = name;
+    input.value = value;
+    return input;
+}
+
+function createForm(data) {
+    let form = document.createElement("form");
+    for (let key in data) {
+        form.appendChild(createInput(key, data[key]));
+    }
+    return form;
+}
