@@ -14,14 +14,14 @@
 
         let accountRows = document.getElementsByClassName("tr-account");
 		for (let i = 0; i < accountRows.length; i++) {
-
+            let accountRow = accountRows[i];
 		    // create transfer row
             let transfersRow = document.createElement("tr");
             transfersRow.classList.add("tr-transfers");
 
-            insertAfter(accountRows[i], transfersRow);
+            insertAfter(accountRow, transfersRow);
 
-			accountRows[i].addEventListener(
+			accountRow.addEventListener(
                 "click",
 			    function () {
                     let loaded = false;
@@ -39,7 +39,7 @@
                         );
                     }
 
-                    let accountId = accountRows[i].getAttribute("account-id");
+                    let accountId = accountRow.getAttribute("account-id");
                     accountLoad[accountId] = function () { loadTransfers(accountId); };
 
                     return function () {
@@ -105,7 +105,7 @@
 		var input, filter, table, tr, td, i, txtValue;
 		input = document.getElementById("search-filter");
 		filter = input.value.toUpperCase();
-		table = document.getElementById("customers");
+		table = document.getElementById("customers-body");
 		tr = table.getElementsByTagName("tr");
 		for (i = 0; i < tr.length; i++) {
 			td = tr[i].getElementsByTagName("td")[0];
@@ -132,6 +132,46 @@
 		// When the user clicks the button, open the modal
 		btn.onclick = function () {
 			modal.style.display = "flex";
+
+            let customers = document.getElementById("customers-body");
+            customers.innerHTML = "";
+
+            getContacts(function (contacts) {
+                let contactsData = JSON.parse(contacts);
+                for (let customerId in contactsData) {
+                    for (let accountId in contactsData[customerId]) {
+                        let fullName = contactsData[customerId][accountId];
+
+                        function autoComplete(event) {
+                            let div = document.getElementById("div-destination-information");
+                            div.querySelector("input[name=destination-customer]").value = customerId.toString();
+                            div.querySelector("input[name=destination-account]").value = accountId.toString();
+
+				            modal.style.display = "none";
+                        }
+
+                        let tr = document.createElement("tr");
+                        tr.addEventListener("click", autoComplete);
+                        customers.appendChild(tr);
+
+                        let tdFullName = document.createElement("td");
+                        tdFullName.innerText = fullName;
+                        tdFullName.addEventListener("click", autoComplete);
+                        tr.appendChild(tdFullName);
+
+                        let tdCustomer = document.createElement("td");
+                        tdCustomer.innerText = customerId.toString();
+                        tdCustomer.addEventListener("click", autoComplete);
+                        tr.appendChild(tdCustomer);
+
+                        let tdAccount = document.createElement("td");
+                        tdAccount.innerText = accountId.toString();
+                        tdAccount.addEventListener("click", autoComplete);
+                        tr.appendChild(tdAccount);
+
+                    }
+                }
+            });
 		}
 
 		// When the user clicks on <span> (x), close the modal

@@ -96,26 +96,30 @@
         <div id="modal-content-customer-selector-popup">
             <input id="search-filter" type="text" placeholder="Cerca per nome e cognome">
             <table id="customers">
-                <tr>
-                    <th>Nome e Cognome</th>
-                    <th>Codice utente</th>
-                    <th>Codice conto</th>
-                </tr>
-                <tr>
-                    <td>Alessio Spagnolo</td>
-                    <td>100</td>
-                    <td>100</td>
-                </tr>
-                <tr>
-                    <td>Alessio Spagnolo</td>
-                    <td>100</td>
-                    <td>101</td>
-                </tr>
-                <tr>
-                    <td>Alessio Spagnolo</td>
-                    <td>100</td>
-                    <td>102</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Nome e Cognome</th>
+                        <th>Codice utente</th>
+                        <th>Codice conto</th>
+                    </tr>
+                </thead>
+                <tbody id="customers-body">
+                    <tr>
+                        <td>Alessio Spagnolo</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>Alessio Spagnolo</td>
+                        <td>100</td>
+                        <td>101</td>
+                    </tr>
+                    <tr>
+                        <td>Alessio Spagnolo</td>
+                        <td>100</td>
+                        <td>102</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -140,9 +144,9 @@
                 <td><span th:text="${account.accountId}">2020</span></td>
                 <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
                 <td><span th:text="${account.lastEdit}">20/20/20</span></td>
-                </tr>
-                <tr class="tr-transfers">
-                    <td colspan="4">
+              </tr>
+              <tr class="tr-transfers">
+                  <td colspan="4">
                         <div id="transfers-body">
                             <table th:remove="all-but-first" th:each="transfer : ${transfers}">
                                 <tr th:class="(${transfer.sourceAccountId} == ${accountId})? 'export' : 'import '"
