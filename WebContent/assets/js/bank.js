@@ -2,33 +2,62 @@
 
 (function () {
 
+    let accountLoad = {};
+
 	// page components
 	window.addEventListener("load", () => {
 		document.getElementById("div-header").addEventListener("click", showAnimation);
 		document.getElementById("search-filter").addEventListener("keyup", searchFilterEvent);
+        document.getElementById('transfer-form').addEventListener("submit", processTransferForm);
 
 		// searchFilterEvent();
 		modalEvent();
 
-		let accountRows = document.getElementsByClassName("tr-account");
-		let transfersRows = document.getElementsByClassName("tr-transfers");
+        let accountRows = document.getElementsByClassName("tr-account");
 		for (let i = 0; i < accountRows.length; i++) {
-			accountRows.item(i).addEventListener
-			("click",
-			function () {
-				let transfers = transfersRows;
-				let displayed = false;
-				function display() {
-					if (displayed) {
-						transfersRows.item(i).style.display = "none";
-						displayed = false
-					} else {
-						transfersRows.item(i).style.display = "contents";
-						displayed = true
-					}
-				}
-				return display;
-			}())
+
+		    // create transfer row
+            let transfersRow = document.createElement("tr");
+            transfersRow.classList.add("tr-transfers");
+
+            insertAfter(accountRows[i], transfersRow);
+
+			accountRows[i].addEventListener(
+                "click",
+			    function () {
+                    let loaded = false;
+				    let displayed = false;
+
+                    function loadTransfers(accountId) {
+                        getTransfers(
+                            accountId,
+                            function (transfers) {
+                                transfersRow.innerHTML = "";
+                                transfersRow.appendChild(transfersToHtml(
+                                    accountId, JSON.parse(transfers)
+                                ));
+                                loaded = true;
+                            }
+                        );
+                    }
+
+                    let accountId = accountRows[i].getAttribute("account-id");
+                    accountLoad[accountId] = function () { loadTransfers(accountId); };
+
+                    return function () {
+                        if (!loaded) {
+                            loadTransfers(this.getAttribute("account-id"));
+                        }
+
+					    if (displayed) {
+						    transfersRow.style.display = "none";
+						    displayed = false
+					    } else {
+						    transfersRow.style.display = "contents";
+						    displayed = true
+					    }
+				    };
+			    }())
 
 		}
 		// if (sessionStorage.getItem("username") == null) {
@@ -118,47 +147,220 @@
 			}
 		}
 	}
+
+    function transfersToHtml(accountId, transfers) {
+        let td = document.createElement("td");
+        td.setAttribute("colspan", "4");
+
+        let div = document.createElement("div");
+        div.setAttribute("id", "transfers-body");
+        td.appendChild(div);
+
+        let table = document.createElement("table");
+        div.appendChild(table);
+
+        for (let i = 0; i < transfers.length || false; i++) {
+            // tr
+            let tr = document.createElement("tr");
+            tr.setAttribute(
+                "class",
+                accountId == transfers[i]["sourceAccountId"] ? "export" : "import"
+            );
+            table.appendChild(tr);
+
+            // td image
+            let tdImage = document.createElement("td");
+            tr.appendChild(tdImage);
+
+            let img = document.createElement("img");
+            img.setAttribute(
+                "src",
+                "./assets/images/"
+                    + (accountId == transfers[i]["sourceAccountId"] ? "upload.png" : "download.png")
+            )
+            img.setAttribute("width", "32");
+            img.setAttribute("height", "32");
+            tdImage.appendChild(img);
+
+            // td account
+            let tdAccount = document.createElement("td");
+            tr.appendChild(tdAccount);
+
+            let strongAccount = document.createElement("strong");
+            strongAccount.innerText = "Conto";
+            tdAccount.appendChild(strongAccount);
+
+            let spanAccount = document.createElement("span");
+            spanAccount.innerText = (accountId == transfers[i]["sourceAccountId"]
+                                     ? transfers[i]["destinationAccountId"]
+                                     : transfers[i]["sourceAccountId"]);
+            strongAccount.appendChild(spanAccount);
+
+            // td amount
+            let tdAmount = document.createElement("td");
+            tr.appendChild(tdAmount);
+
+            let strongAmount = document.createElement("strong");
+            tdAmount.appendChild(strongAmount);
+
+            let spanAmount = document.createElement("span");
+            spanAmount.innerText =
+                (accountId == transfers[i]["sourceAccountId"] ? "-" : "+")
+                + formatAmount(transfers[i]["amount"]);
+            strongAmount.appendChild(spanAmount);
+
+            // td date
+            let tdDate = document.createElement("td");
+            tr.appendChild(tdDate);
+
+            let em = document.createElement("em");
+            tdDate.appendChild(em);
+
+            let spanDate = document.createElement("span");
+            spanDate.innerText = transfers[i]["creationDate"];
+            em.appendChild(spanDate);
+
+            // td help
+            let tdHelp = document.createElement("td");
+            tr.appendChild(tdHelp);
+
+            let imgHelp = document.createElement("img");
+            imgHelp.setAttribute("src", "./assets/images/icons8-help-64.png");
+            imgHelp.setAttribute("height", "32");
+            imgHelp.setAttribute("width", "32");
+            imgHelp.setAttribute("title", transfers[i]["cause"]);
+            tdHelp.appendChild(imgHelp);
+        }
+
+        return td;
+    }
+
+    function getContacts(cback) {
+        makeCall(
+            "POST", './get-contacts', null,
+            function(req) {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    let contacts = req.responseText;
+                    switch (req.status) {
+                    case 200:
+                        cback(contacts);
+                        break;
+                    default:
+                        console.log("Internal error on get contacts");
+                        cossole.log(contacts);
+                        break;
+                    }
+                }
+            }
+        );
+    }
+
+    function addContact(accountId, cback) {
+        makeCall(
+            "POST", './add-contact', createForm({"account-id": accountId.toString()}),
+            function(req) {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    let message = req.responseText;
+                    switch (req.status) {
+                    case 200:
+                        cback();
+                        break;
+                    default:
+                        console.log("Internal error on add contact");
+                        console.log(message);
+                        break;
+                    }
+                }
+            }
+        );
+    }
+
+    function getTransfers(accountId, cback) {
+        makeCall(
+            "POST", './get-transfers', createForm({"account-id": accountId.toString()}),
+            function(req) {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    let transfers = req.responseText;
+                    switch (req.status) {
+                    case 200:
+                        cback(transfers);
+                        break;
+                    default:
+                        console.log("Internal error on add contact");
+                        console.log(transfers);
+                        break;
+                    }
+                }
+            }
+        );
+    }
+
+    function createTransfer(
+        sourceAccountId,
+        destinationAccountId,
+        destinationCustomerId,
+        amount,
+        cause,
+        cback
+    ) {
+        makeCall(
+            "POST", './create-transfer',
+            createForm({
+                "source-account": sourceAccountId.toString(),
+                "destination-account": destinationAccountId.toString(),
+                "destination-customer": destinationCustomerId.toString(),
+                "amount": amount.toString(),
+                "cause": cause.toString()
+            }),
+            function(req) {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    let account = req.responseText;
+                    switch (req.status) {
+                    case 200:
+                        cback(account);
+                        break;
+                    default:
+                        console.log("Internal error on create transfer");
+                        console.log(account);
+                        break;
+                    }
+                }
+            }
+        );
+    }
+
+    function formatAmount(amount) {
+        return Math.floor(amount / 100).toString() + "," + (amount % 100).toString().padStart(2, "0");
+    }
+
+    function processTransferForm(e) {
+        if (e.preventDefault) e.preventDefault();
+
+        if (this.checkValidity()) {
+
+            makeCall(
+                "POST", './create-transfer', this,
+                function(req) {
+                    if (req.readyState == XMLHttpRequest.DONE) {
+                        let account = req.responseText;
+                        switch (req.status) {
+                        case 200:
+                            console.log(JSON.parse(account));
+                            break;
+                        case 400: // bad request
+                        case 401: // unauthorized
+                        case 500: // server error
+        	                console.log(account);
+                            break;
+                        }
+                    }
+                }
+            );
+        } else {
+    	    this.reportValidity();
+        }
+
+        return false;
+    }
+
 })();
-
-function populateContacts(contacts) {
-    console.log(contacts);
-}
-
-function getContacts() {
-    makeCall(
-        "POST", './get-contacts', null,
-        function(req) {
-            if (req.readyState == XMLHttpRequest.DONE) {
-                let contacts = req.responseText;
-                switch (req.status) {
-                case 200:
-                    populateContacts(contacts);
-                    break;
-                default:
-                    console.log("Internal error on get contacts");
-                    cossole.log(contacts);
-                    break;
-                }
-            }
-        }
-    );
-}
-
-function addContact(accountId) {
-    makeCall(
-        "POST", './add-contact', createForm({"account-id": accountId.toString()}),
-        function(req) {
-            if (req.readyState == XMLHttpRequest.DONE) {
-                let message = req.responseText;
-                switch (req.status) {
-                case 200:
-                    break;
-                default:
-                    console.log("Internal error on add contact");
-                    console.log(message);
-                    break;
-                }
-            }
-        }
-    );
-}

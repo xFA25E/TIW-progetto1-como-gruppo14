@@ -32,3 +32,7 @@ function createForm(data) {
     }
     return form;
 }
+
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}

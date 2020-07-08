@@ -14,6 +14,7 @@
                         switch (req.status) {
                         case 200:
                             window.location.href = "./home";
+                            return true;
                             break;
                         case 400: // bad request
                         case 401: // unauthorized

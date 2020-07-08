@@ -47,9 +47,7 @@ public class AddContact extends HttpServlet {
             response.getWriter().println("Incorrect credentials");
             return;
         }
-        for (Map.Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-        	System.out.println(e.getKey() + " " + e.getValue());
-        }
+        
         String accountIdString = request.getParameter("account-id");
         if (accountIdString == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

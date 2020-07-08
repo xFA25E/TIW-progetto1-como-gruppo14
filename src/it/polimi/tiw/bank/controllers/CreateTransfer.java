@@ -1,6 +1,9 @@
 package it.polimi.tiw.bank.controllers;
 
 import it.polimi.tiw.bank.dao.TransferDao;
+import it.polimi.tiw.bank.dao.AccountDao;
+
+import it.polimi.tiw.bank.beans.Account;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class CreateTransfer
@@ -46,6 +51,7 @@ public class CreateTransfer extends HttpServlet {
             return;
         }
 
+
         // Parameters validation
         String sourceAccountIdString = request.getParameter("source-account");
         String destinationCustomerIdString = request.getParameter("destination-customer");
@@ -63,15 +69,15 @@ public class CreateTransfer extends HttpServlet {
             return;
         }
 
-        if (sourceAccountIdString.matches("^[0-9]+$")
-            || destinationCustomerIdString.matches("^[0-9]+$")
-            || destinationAccountIdString.matches("^[0-9]+$")) {
+        if (!sourceAccountIdString.matches("[0-9]+")
+            || !destinationCustomerIdString.matches("[0-9]+")
+            || !destinationAccountIdString.matches("[0-9]+")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Accounts should be numeric");
             return;
         }
 
-        if (amountString.matches("(0|[1-9][0-9]*),[0-9]{2}")) {
+        if (!amountString.matches("(0|[1-9][0-9]*),[0-9]{2}")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Amount is not correct");
             return;
@@ -98,13 +104,26 @@ public class CreateTransfer extends HttpServlet {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             new TransferDao(connection).createTransfer(sourceAccountId, destinationAccountId,
                                                        destinationCustomerId, amount, cause);
-            response.setStatus(HttpServletResponse.SC_OK);
+            Account account = new AccountDao(connection).findAccountByAccountId(sourceAccountId);
+
+            if (account != null) {
+                String json = new Gson().toJson(account);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json);
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later");
+                return;
+            }
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Internal server error, retry later");
+            return;
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println(e.getMessage());
+            return;
         }
     }
 }

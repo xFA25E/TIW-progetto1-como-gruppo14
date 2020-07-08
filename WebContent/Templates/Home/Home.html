@@ -23,7 +23,7 @@
 
     <div id="payment">
         <div id="payment-background">
-            <form action="/create-transfer" method="POST">
+            <form id="transfer-form">
                 <fieldset>
 
                     <div id="div-header">
@@ -36,11 +36,12 @@
                             <label for="source-account">
                                 Seleziona il numero del conto con il quale effettuare il bonifico
                             </label>
-                            <select name="source-account">
-                                <option value="100">100</option>
-                                <option value="101">101</option>
-                                <option value="102">102</option>
-                                <option value="103">103</option>
+                            <select name="source-account" th:remove="all-but-first">
+                              <option th:each="account : ${accounts}" th:text="${account.accountId}" th:attr="value=${account.accountId}" value="100">100</option>
+                              <option value="100">100</option>
+                              <option value="101">101</option>
+                              <option value="102">102</option>
+                              <option value="103">103</option>
                             </select>
                         </div>
 
@@ -82,7 +83,9 @@
                             </div>
                         </div>
 
-                        <div id="div-submit"><input id="submit" type="submit" value="Invia" title="SABBAMIT"></div>
+                        <div id="div-submit">
+                            <input id="submit" type="submit" value="Invia" title="SABBAMIT">
+                        </div>
                     </div>
                 </fieldset>
             </form>
@@ -130,15 +133,13 @@
                 </tr>
             </thead>
 
-            <tbody th:remove="all-but-first" th:each="account : ${accounts}">
+            <tbody th:remove="all-but-first">
 
-                <tr class="tr-account"
-                    th:attr="onclick=|window.location=&apos;account?account-id=| + ${account.accountId} + |&apos;|">
-
-                    <td><img src="./assets/images/bank-card-back-side.png"></td>
-                    <td><span th:text="${account.accountId}">2020</span></td>
-                    <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
-                    <td><span th:text="${account.lastEdit}">20/20/20</span></td>
+              <tr class="tr-account" th:each="account : ${accounts}" th:attr="account-id=${account.accountId}">
+                <td><img src="./assets/images/bank-card-back-side.png"></td>
+                <td><span th:text="${account.accountId}">2020</span></td>
+                <td>&euro;<span th:text="${account.euros} + |,| + ${account.cents}">23423,00</span></td>
+                <td><span th:text="${account.lastEdit}">20/20/20</span></td>
                 </tr>
                 <tr class="tr-transfers">
                     <td colspan="4">
@@ -153,9 +154,8 @@
                                     <td>
                                         <strong>
                                             Conto
-                                            <span
-                                                th:text="(${transfer.sourceAccountId} == ${accountId})? (${transfer.destinationAccountId}) : (${transfer.sourceAccountId})">
-                                                2020
+                                            <span th:text="(${transfer.sourceAccountId} == ${accountId})? (${transfer.destinationAccountId}) : (${transfer.sourceAccountId})">
+                                              2020
                                         </strong>
                                     </td>
                                     <td>
