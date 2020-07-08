@@ -32,7 +32,6 @@ import com.google.gson.Gson;
 @MultipartConfig
 public class GetTransfers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	Connection connection = null;
 
 	/**
 	 * @see HttpServlet#HttpServlet()

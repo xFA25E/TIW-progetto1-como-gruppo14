@@ -61,6 +61,7 @@ public class HomePage extends HttpServlet {
 		HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("./login");
+            return;
         }
 
         ServletContext context = getServletContext();
