@@ -16,6 +16,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
  * Servlet implementation class GetTransfers
  */
 @WebServlet("/GetTransfers")
+@MultipartConfig
 public class GetTransfers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Connection connection = null;

@@ -23,9 +23,10 @@ public class ContactsDao {
             pstatement.setLong(1, customerId);
             try (ResultSet result = pstatement.executeQuery()) {
                 while (result.next()) {
-                    Long accountId = result.getLong("account_id");
-                    String fullName = result.getString("full_name");
-                    contacts.addContact(accountId, fullName);
+                    Long contactCustomerId = result.getLong("contact_customer_id");
+                    Long contactAccountId = result.getLong("contact_account_id");
+                    String contactFullName = result.getString("contact_full_name");
+                    contacts.addContact(contactCustomerId, contactAccountId, contactFullName);
                 }
             }
         }

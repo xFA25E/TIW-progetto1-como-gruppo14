@@ -62,7 +62,7 @@ public class GetContacts extends HttpServlet {
         } catch (ClassNotFoundException e) {
             throw new UnavailableException("Can't load database driver");
         }
-
+        
         Contacts contacts;
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             contacts = new ContactsDao(connection).findContactsByCustomerId(customerId);

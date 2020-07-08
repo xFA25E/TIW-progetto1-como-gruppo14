@@ -6,36 +6,27 @@ import java.util.Objects;
 
 public class Contacts {
 	private long customerId;
-    private Map<Long, String> contacts = new HashMap<>();
+    private Map<Long, Map<Long, String>> contacts = new HashMap<>();
 
     public Contacts(long customerId) {
         this.customerId = customerId;
-    }
-
-    public Contacts(long customerId, Map<Long, String> contacts) {
-        this(customerId);
-        this.contacts.putAll(Objects.requireNonNull(contacts));
     }
 
 	public long getCustomerId() {
 		return customerId;
 	}
 
-	public Map<Long, String> getContacts() {
+	public Map<Long, Map<Long, String>> getContacts() {
 		return contacts;
 	}
 
-	public void setContacts(Map<Long, String> contacts) {
-		this.contacts = Objects.requireNonNull(contacts);
-	}
+    public void addContact(long customerId, long accountId, String fullName) {
+        Objects.requireNonNull(fullName);
 
-    public void addContacts(Map<Long, String> contacts) {
-        this.contacts.putAll(Objects.requireNonNull(contacts));
-	}
-
-    public void addContact(Long accountId, String fullName) {
-        this.contacts.put(Objects.requireNonNull(accountId),
-                          Objects.requireNonNull(fullName));
+        if (contacts.get(customerId) == null) {
+            contacts.put(customerId, new HashMap<Long, String>());
+        }
+        contacts.get(customerId).put(accountId, fullName);
 	}
 
 }
