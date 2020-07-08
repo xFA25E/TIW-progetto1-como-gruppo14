@@ -31,10 +31,19 @@
                         getTransfers(
                             accountId,
                             function (transfers) {
+                                let parsedTransfers = JSON.parse(transfers);
                                 transfersRow.innerHTML = "";
                                 transfersRow.appendChild(transfersToHtml(
-                                    accountId, JSON.parse(transfers)
+                                    accountId, parsedTransfers
                                 ));
+                                getAccount(
+                                    accountId,
+                                    function (account) {
+                                        let amount = JSON.parse(account)["amount"];
+                                        let famount = formatAmount(amount);
+                                        accountRow.querySelector("td:nth-child(3) > span").innerText = famount;
+                                    }
+                                );
                             }
                         );
                     }
@@ -198,7 +207,7 @@
         let table = document.createElement("table");
         div.appendChild(table);
 
-        for (let i = 0; i < transfers.length || false; i++) {
+        for (let i = 0; i < transfers.length; i++) {
             // tr
             let tr = document.createElement("tr");
             tr.setAttribute(
@@ -334,23 +343,10 @@
         );
     }
 
-    function createTransfer(
-        sourceAccountId,
-        destinationAccountId,
-        destinationCustomerId,
-        amount,
-        cause,
-        cback
-    ) {
+    function getAccount(accountId, cback) {
         makeCall(
-            "POST", './create-transfer',
-            createForm({
-                "source-account": sourceAccountId.toString(),
-                "destination-account": destinationAccountId.toString(),
-                "destination-customer": destinationCustomerId.toString(),
-                "amount": amount.toString(),
-                "cause": cause.toString()
-            }),
+            "POST", './get-account',
+            createForm({"account-id": accountId.toString()}),
             function(req) {
                 if (req.readyState == XMLHttpRequest.DONE) {
                     let account = req.responseText;

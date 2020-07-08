@@ -63,6 +63,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>GetAccount</servlet-name>
+        <servlet-class>it.polimi.tiw.bank.controllers.GetAccount</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAccount</servlet-name>
+        <url-pattern>/get-account</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
         <servlet-name>GetContacts</servlet-name>
         <servlet-class>it.polimi.tiw.bank.controllers.GetContacts</servlet-class>
     </servlet>
