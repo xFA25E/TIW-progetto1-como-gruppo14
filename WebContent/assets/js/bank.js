@@ -8,6 +8,7 @@
 		document.getElementById("div-header").addEventListener("click", showAnimation);
 		document.getElementById("search-filter").addEventListener("keyup", searchFilterEvent);
         document.getElementById('transfer-form').addEventListener("submit", processTransferForm);
+        document.getElementById("forget").addEventListener("click", logout);
 
 		// searchFilterEvent();
 		modalEvent();
@@ -235,7 +236,7 @@
             tr.appendChild(tdAccount);
 
             let strongAccount = document.createElement("strong");
-            strongAccount.innerText = "Conto";
+            strongAccount.innerText = "Conto ";
             tdAccount.appendChild(strongAccount);
 
             let spanAccount = document.createElement("span");
@@ -373,6 +374,10 @@
 
         if (this.checkValidity()) {
 
+            let formData = new FormData(this);
+            let destinationAccount = formData.get("destination-account");
+            let destinationCustomer = formData.get("destination-customer");
+
             makeCall(
                 "POST", './create-transfer', this,
                 function(req) {
@@ -382,13 +387,46 @@
                         case 200:
                             let ids = JSON.parse(accounts);
                             for (let i = 0; i < ids.length; i++) {
-                                accountLoad[ids[i]]();
+                                if (accountLoad[ids[i]]) {
+                                    accountLoad[ids[i]]();
+                                }
                             }
+
+                            getContacts(function (contacts) {
+                                let pContacts = JSON.parse(contacts);
+
+                                if (pContacts[destinationCustomer] && pContacts[destinationCustomer][destinationAccount]) {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Bonifico effettuato con successo',
+                                        showConfirmButton: false,
+                                        text: 'Complimenti!',
+                                        timer: 2000,
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Bonifico effettuato con successo',
+                                        text: "Vuoi aggiungure l'account alla tua rubrica?",
+                                        icon: 'success',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Aggiungi'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            addContact(
+                                                destinationAccount,
+                                                function () {;}
+                                            );
+                                        }
+                                    });
+                                }
+                            })
                             break;
                         case 400: // bad request
                         case 401: // unauthorized
                         case 500: // server error
-        	                console.log(account);
                             break;
                         }
                     }
@@ -401,4 +439,14 @@
         return false;
     }
 
+    function logout() {
+        makeCall(
+            "POST", './forget', null,
+            function(req) {
+                if(req.readyState == XMLHttpRequest.DONE) {
+                    window.location.href = "./login";
+                }
+            }
+        );
+    }
 })();

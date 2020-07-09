@@ -33,7 +33,7 @@ h2 {
     height: 100%;
 }
 
-#header input[type=submit] {
+#header button {
     background-color: #1f222b;
     border: none;
     text-decoration: none;

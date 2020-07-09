@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="./assets/js/bank.js" defer></script>
     <script src="./assets/js/utils.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9" defer></script>
 </head>
 
 <body>
@@ -15,9 +16,7 @@
             <h2><span th:text="${fullName}">Alessio Spagnolo</span></h2>
         </div>
         <div>
-            <form action="/forget" method="post">
-                <input type="submit" value="Log Out">
-            </form>
+            <button id="forget" type="button">Log Out</button>
         </div>
     </div>
 
