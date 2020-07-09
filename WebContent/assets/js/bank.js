@@ -40,9 +40,12 @@
                                 getAccount(
                                     accountId,
                                     function (account) {
-                                        let amount = JSON.parse(account)["amount"];
+                                        let data = JSON.parse(account);
+                                        let amount = data["amount"];
+                                        let lastEdit = data["lastEdit"];
                                         let famount = formatAmount(amount);
                                         accountRow.querySelector("td:nth-child(3) > span").innerText = famount;
+                                        accountRow.querySelector("td:nth-child(4) > span").innerText = lastEdit;
                                     }
                                 );
                             }
@@ -427,6 +430,11 @@
                         case 400: // bad request
                         case 401: // unauthorized
                         case 500: // server error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: accounts,
+                          })
                             break;
                         }
                     }

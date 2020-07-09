@@ -79,12 +79,20 @@ public class CreateTransfer extends HttpServlet {
             response.getWriter().println("Amount is not correct");
             return;
         }
-
+        
+        
         long sourceAccountId = Long.parseLong(sourceAccountIdString);
         long destinationCustomerId = Long.parseLong(destinationCustomerIdString);
         long destinationAccountId = Long.parseLong(destinationAccountIdString);
         long amount = Long.parseLong(amountString.replace(",", ""));
 
+        
+        if (sourceAccountId == destinationAccountId) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Can't transfer money to same account");
+            return;
+        }
+        
         // Db connection
         ServletContext context = getServletContext();
         String driver = context.getInitParameter("dbDriver");
