@@ -72,12 +72,6 @@
 			    }())
 
 		}
-		// if (sessionStorage.getItem("username") == null) {
-		// 	window.location.href = "index.html";
-		// } else {
-		// pageOrchestrator.start(); // initialize the components
-		// pageOrchestrator.refresh();
-		// }
 	}, false);
 
 	function showAnimation() {
@@ -88,11 +82,6 @@
 			$("#div-form").slideUp("slow");
 			$("#img-form-header").attr("src", "./assets/images/arrow-down-24.png")
 		}
-	}
-
-	function AccountsList() {
-		this.show = function () { ; }
-		this.update = function () { ; }
 	}
 
 	function TransfersList() {
@@ -108,7 +97,7 @@
 		this.pay = function () { ; }
 	}
 
-	function AddressBook() {
+	function Contacts() {
 		this.reset = function () { ; }
 		this.registerEvents = function () { ; }
 		this.addContact = function () { ; }
